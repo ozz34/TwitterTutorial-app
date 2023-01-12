@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainTabController.swift
 //  TwitterTutorial
 //
 //  Created by Иван Худяков on 12.01.2023.
@@ -7,13 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainTabController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        view.backgroundColor = .systemPink
     }
-
-
 }
-
