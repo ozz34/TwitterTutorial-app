@@ -9,6 +9,7 @@
 import UIKit
 
 class ExploreController: UIViewController {
+    
     //MARK: -Properties
     
     //MARK: -Lyfecycle
@@ -17,6 +18,7 @@ class ExploreController: UIViewController {
 
         configureUI()
     }
+   
     //MARK: -Helpers
     func configureUI() {
         view.backgroundColor = .white

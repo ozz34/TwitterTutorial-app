@@ -9,6 +9,7 @@
 import UIKit
 
 class NotificationsController: UIViewController {
+  
     //MARK: -Properties
     
     //MARK: -Lyfecycle
@@ -17,6 +18,7 @@ class NotificationsController: UIViewController {
 
         configureUI()
     }
+  
     //MARK: -Helpers
     func configureUI() {
         view.backgroundColor = .white
