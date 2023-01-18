@@ -8,6 +8,7 @@
 import UIKit
 
 class LoginController: UIViewController {
+    
     //MARK: -Properties
     private let logoImageView: UIImageView = {
        let iv = UIImageView()
@@ -29,12 +30,12 @@ class LoginController: UIViewController {
         return view
     }()
 
-    private let emailTextField = {
+    private let emailTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Email")
         return tf
     }()
     
-    private let passwordTextField = {
+    private let passwordTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Password")
         tf.isSecureTextEntry = true
         return tf
@@ -48,15 +49,15 @@ class LoginController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.addTarget(LoginController.self, action: #selector(handleLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         
         return button
     }()
     
     private let dontHaveAccountButton: UIButton = {
         let button = Utilities().createAttributebButton("Don't have an account? ", "Sign Up")
-        button.addTarget(LoginController.self, action: #selector(handleShowSignUp), for: .touchUpInside)
-        
+        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+       
         return button
     }()
     
@@ -69,7 +70,8 @@ class LoginController: UIViewController {
     
     //MARK: -Selectors
     @objc func handleShowSignUp() {
-        print("111111")
+        let controller = RegistrationController()
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     @objc func handleLogin() {
@@ -88,14 +90,17 @@ class LoginController: UIViewController {
         logoImageView.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
         logoImageView.setDimensions(width: 150, height: 150)
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView, loginButton])
+        let stack = UIStackView(arrangedSubviews: [emailContainerView,
+                                                   passwordContainerView,
+                                                   loginButton])
         stack.axis = .vertical
         stack.spacing = 20
         view.addSubview(stack)
-        stack.anchor(top: logoImageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 32, paddingRight: 32)
-        
-        view.addSubview(loginButton)
-        loginButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
+        stack.anchor(top: logoImageView.bottomAnchor,
+                     left: view.leftAnchor,
+                     right: view.rightAnchor,
+                     paddingLeft: 32,
+                     paddingRight: 32)
         
         view.addSubview(dontHaveAccountButton)
         dontHaveAccountButton.anchor(left: view.leftAnchor,

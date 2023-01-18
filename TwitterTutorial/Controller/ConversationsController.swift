@@ -9,6 +9,7 @@
 import UIKit
 
 class ConversationsController: UIViewController {
+   
     //MARK: -Properties
     
     //MARK: -Lyfecycle
@@ -17,9 +18,9 @@ class ConversationsController: UIViewController {
         
         configureUI()
     }
+   
     //MARK: -Helpers
     func configureUI() {
-        
         view.backgroundColor = .white
         navigationItem.title = "Messages"
     }

@@ -8,6 +8,7 @@
 import UIKit
 
 class FeedController: UIViewController {
+    
     //MARK: -Properties
     
     //MARK: -Lyfecycle
@@ -17,7 +18,6 @@ class FeedController: UIViewController {
         configureUI()
     }
     //MARK: -Helpers
-    
     func configureUI() {
         view.backgroundColor = .white
         
