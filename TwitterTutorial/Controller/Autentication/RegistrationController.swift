@@ -12,6 +12,7 @@ class RegistrationController: UIViewController {
    
     //MARK: -Properties
     private let imagePicker = UIImagePickerController()
+    private var profileImage: UIImage?
     
     private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -101,18 +102,31 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration() {
-        guard let email = emailTextField.text else { return }
+        guard let profileImage = profileImage else {
+            print("Debug: Please select a profile image")
+            return
+        }
+        guard let eMail = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
+        guard let fullName = fullNameTextField.text else { return }
+        guard let userName = userNameTextField.text else { return }
         
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+        
+        Auth.auth().createUser(withEmail: eMail, password: password) { result, error in
             if let error = error {
                 print("Debug: \(error.localizedDescription)")
                 return
             }
+            
+            guard let uid = result?.user.uid else { return }
+            let values = ["email": eMail, "fullname": fullName, "username": userName]
+            let ref = Database.database().reference().child("users").child(uid)
+            ref.updateChildValues(values) { (error, ref) in
+                print("Debug: Succesfully updated user information..")
+            }
         }
-        
-        print("Debug: Succesfully registered")
     }
+    
     
     @objc func handleAddProfilePhoto() {
         present(imagePicker, animated: true)
@@ -160,6 +174,8 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
+        
         plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
         plusPhotoButton.layer.cornerRadius = 128/2
         plusPhotoButton.layer.masksToBounds = true
