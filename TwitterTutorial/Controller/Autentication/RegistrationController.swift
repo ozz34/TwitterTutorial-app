@@ -111,18 +111,25 @@ class RegistrationController: UIViewController {
         guard let fullName = fullNameTextField.text else { return }
         guard let userName = userNameTextField.text else { return }
         
-        
-        Auth.auth().createUser(withEmail: eMail, password: password) { result, error in
-            if let error = error {
-                print("Debug: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let uid = result?.user.uid else { return }
-            let values = ["email": eMail, "fullname": fullName, "username": userName]
-            let ref = Database.database().reference().child("users").child(uid)
-            ref.updateChildValues(values) { (error, ref) in
-                print("Debug: Succesfully updated user information..")
+        guard let imageData = profileImage.jpegData(compressionQuality: 0.3) else { return }
+        let fileName = NSUUID().uuidString
+        let storageRef = STORAGE_PROFILE_IMAGES.child(fileName)
+        storageRef.putData(imageData, metadata: nil) { meta, error in
+            storageRef.downloadURL { (url, error) in
+                guard let profileImageUrl = url?.absoluteString else { return }
+                
+                Auth.auth().createUser(withEmail: eMail, password: password) { result, error in
+                    if let error = error {
+                        print("Debug: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let uid = result?.user.uid else { return }
+                    let values = ["email": eMail, "fullname": fullName, "username": userName, "profileImageUrl": profileImageUrl]
+                    REF_USERS.child(uid).updateChildValues(values) { (error, ref) in
+                        print("Debug: Succesfully updated user information..")
+                    }
+                }
             }
         }
     }
