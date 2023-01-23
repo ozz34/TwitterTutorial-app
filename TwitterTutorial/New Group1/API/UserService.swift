@@ -18,7 +18,8 @@ class UserService {
 
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
-            guard let userName = dictionary["username"] else { return }
+           
+            let user = User(dictionary: dictionary, uid: uid)
         }
     }
 }
