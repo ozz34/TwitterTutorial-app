@@ -105,13 +105,13 @@ class RegistrationController: UIViewController {
             print("Debug: Please select a profile image")
             return
         }
-        guard let eMail = emailTextField.text else { return }
+        guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
         guard let userName = userNameTextField.text else { return }
         
 
-        let authCredential = AuthCredentials(email: eMail,
+        let authCredential = AuthCredentials(email: email,
                                              password: password,
                                              fullName: fullName,
                                              userName: userName,
