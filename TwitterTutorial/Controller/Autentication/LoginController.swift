@@ -41,7 +41,7 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    private let loginButton: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)
         button.tintColor = .twitterBlue
@@ -54,7 +54,7 @@ class LoginController: UIViewController {
         return button
     }()
     
-    private let dontHaveAccountButton: UIButton = {
+    private lazy var dontHaveAccountButton: UIButton = {
         let button = Utilities().createAttributebButton("Don't have an account? ", "Sign Up")
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
        
@@ -75,9 +75,22 @@ class LoginController: UIViewController {
     }
     
     @objc func handleLogin() {
-        print("dgdfgsg")
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        AuthService.shared.logUserIn(withEmail: email, password: password) { (result, error) in
+            if let error = error {
+                print("DEBUG: Error logging in \(error.localizedDescription)")
+                return
+            }
+
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            guard let tab = windowScene.windows.first?.rootViewController as? MainTabController else { return }
+            tab.autenticateUserAndConfigureUI()
+            
+           self.dismiss(animated: true, completion: nil)
+        }
     }
-    
     
     //MARK: -Helpers
     

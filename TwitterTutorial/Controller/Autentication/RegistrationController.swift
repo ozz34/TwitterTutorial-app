@@ -11,8 +11,9 @@ class RegistrationController: UIViewController {
    
     //MARK: -Properties
     private let imagePicker = UIImagePickerController()
+    private var profileImage: UIImage?
     
-    private let plusPhotoButton: UIButton = {
+    private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: "plus_photo")
         button.setImage(image, for: .normal)
@@ -66,7 +67,7 @@ class RegistrationController: UIViewController {
         return tf
     }()
     
-    private let registrationButton: UIButton = {
+    private lazy var registrationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
         button.tintColor = .twitterBlue
@@ -80,7 +81,7 @@ class RegistrationController: UIViewController {
     }()
     
     
-    private let alreadyHaveAccountButton: UIButton = {
+    private lazy var alreadyHaveAccountButton: UIButton = {
         let button = Utilities().createAttributebButton("Already have an account? ", "Log In")
         button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
        
@@ -100,9 +101,32 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration() {
-        print("Login")
+        guard let profileImage = profileImage else {
+            print("Debug: Please select a profile image")
+            return
+        }
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let fullName = fullNameTextField.text else { return }
+        guard let userName = userNameTextField.text else { return }
+        
+
+        let authCredential = AuthCredentials(email: email,
+                                             password: password,
+                                             fullName: fullName,
+                                             userName: userName,
+                                             profileImage: profileImage)
+        
+        AuthService.shared.registerUser(credentials: authCredential) {(error, ref) in
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            guard let tab = windowScene.windows.first?.rootViewController as? MainTabController else { return }
+            tab.autenticateUserAndConfigureUI()
+            
+           self.dismiss(animated: true, completion: nil)
+        }
     }
     
+
     @objc func handleAddProfilePhoto() {
         present(imagePicker, animated: true)
     }
@@ -149,6 +173,8 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
+        
         plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
         plusPhotoButton.layer.cornerRadius = 128/2
         plusPhotoButton.layer.masksToBounds = true
