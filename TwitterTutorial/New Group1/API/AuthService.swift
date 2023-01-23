@@ -16,8 +16,10 @@ struct AuthCredentials {
     let profileImage: UIImage
 }
 
-struct AuthService {
+class AuthService {
     static let shared = AuthService()
+    
+    private init() {}
     
     func registerUser(credentials: AuthCredentials, completion: @escaping(Error?, DatabaseReference) -> Void) {
         let eMail = credentials.email
