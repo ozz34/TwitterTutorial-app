@@ -54,6 +54,7 @@
 		87E91BB02970511B00A93AA8 /* ExploreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BAF2970511B00A93AA8 /* ExploreController.swift */; };
 		87E91BB42970513800A93AA8 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB32970513800A93AA8 /* NotificationsController.swift */; };
 		87E91BB62970516100A93AA8 /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB52970516100A93AA8 /* ConversationsController.swift */; };
+		87F639F3297FDE70009F2376 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639F2297FDE70009F2376 /* UploadTweetController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		87E91BAF2970511B00A93AA8 /* ExploreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreController.swift; sourceTree = "<group>"; };
 		87E91BB32970513800A93AA8 /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		87E91BB52970516100A93AA8 /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
+		87F639F2297FDE70009F2376 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 				87E91BAF2970511B00A93AA8 /* ExploreController.swift */,
 				87E91BB32970513800A93AA8 /* NotificationsController.swift */,
 				87E91BB52970516100A93AA8 /* ConversationsController.swift */,
+				87F639F2297FDE70009F2376 /* UploadTweetController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				87AE478429759AAB0035ACF9 /* Extensions.swift in Sources */,
 				87E91B912970450000A93AA8 /* SceneDelegate.swift in Sources */,
 				8740D482297BD751001D7E95 /* AuthService.swift in Sources */,
+				87F639F3297FDE70009F2376 /* UploadTweetController.swift in Sources */,
 				87CFB002297EF54600EC54A6 /* User.swift in Sources */,
 				87E91BAA2970487600A93AA8 /* MainTabController.swift in Sources */,
 				87E91BB62970516100A93AA8 /* ConversationsController.swift in Sources */,
