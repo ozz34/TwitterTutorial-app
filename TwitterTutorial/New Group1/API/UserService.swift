@@ -12,7 +12,7 @@ class UserService {
     
     private init() {}
     
-    func fetchUser() {
+    func fetchUser(completion: @escaping(User)-> Void) {
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
@@ -20,6 +20,7 @@ class UserService {
             guard let dictionary = snapshot.value as? [String: Any] else { return }
            
             let user = User(dictionary: dictionary, uid: uid)
+            completion(user)
         }
     }
 }
