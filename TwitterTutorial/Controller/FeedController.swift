@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class FeedController: UIViewController {
+class FeedController: UICollectionViewController {
     
     //MARK: -Properties
     var user: User? {
@@ -16,6 +16,8 @@ class FeedController: UIViewController {
             configureLeftBarButton()
         }
     }
+    
+    private let identifier = "TweetCell"
     
     //MARK: -Lyfecycle
     override func viewDidLoad() {
@@ -35,11 +37,12 @@ class FeedController: UIViewController {
     func configureUI() {
         view.backgroundColor = .white
         
+        collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
+        
         let imageView = UIImageView(image: UIImage(named: "twitter_logo_blue"))
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
-
     }
     
     func configureLeftBarButton() {
@@ -55,3 +58,21 @@ class FeedController: UIViewController {
     }
 }
   
+extension FeedController {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        5
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell()}
+  
+        
+        return cell
+    }
+}
+
+extension FeedController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: view.frame.width, height: 200)
+    }
+}
