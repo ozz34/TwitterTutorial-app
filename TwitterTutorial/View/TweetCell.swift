@@ -9,6 +9,11 @@ import UIKit
 
 class TweetCell: UICollectionViewCell {
     //MARK: -Properties
+    var tweet: Tweet? {
+        didSet {
+            configureCell()
+        }
+    }
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -136,4 +141,9 @@ class TweetCell: UICollectionViewCell {
     }
     
     //MARK: -Helpers
+    func configureCell() {
+        guard let tweet else { return }
+        captionLabel.text = tweet.caption
+        
+    }
 }
