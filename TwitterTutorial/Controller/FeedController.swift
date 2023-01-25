@@ -18,6 +18,7 @@ class FeedController: UICollectionViewController {
     }
     
     private let identifier = "TweetCell"
+    
     private var tweets = [Tweet]() {
         didSet {
             collectionView.reloadData()
@@ -51,7 +52,7 @@ class FeedController: UICollectionViewController {
     }
     
     func configureLeftBarButton() {
-        guard let user = user else { return }
+        guard let user else { return }
         
         let profileImageView = UIImageView()
         profileImageView.setDimensions(width: 32, height: 32)

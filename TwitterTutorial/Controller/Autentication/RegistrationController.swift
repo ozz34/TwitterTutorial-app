@@ -101,7 +101,7 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration() {
-        guard let profileImage = profileImage else {
+        guard let profileImage else {
             print("Debug: Please select a profile image")
             return
         }
