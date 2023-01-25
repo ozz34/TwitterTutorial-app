@@ -55,7 +55,7 @@ class LoginController: UIViewController {
     }()
     
     private lazy var dontHaveAccountButton: UIButton = {
-        let button = Utilities().createAttributebButton("Don't have an account? ", "Sign Up")
+        let button = Utilities().createAttributeButton("Don't have an account? ", "Sign Up")
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
        
         return button

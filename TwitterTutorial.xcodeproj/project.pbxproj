@@ -59,6 +59,7 @@
 		87F639F729810793009F2376 /* TweetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639F629810793009F2376 /* TweetService.swift */; };
 		87F639F929811E21009F2376 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639F829811E21009F2376 /* Tweet.swift */; };
 		87F639FB298132B5009F2376 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639FA298132B5009F2376 /* TweetCell.swift */; };
+		87F639FD298177BD009F2376 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639FC298177BD009F2376 /* TweetViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		87F639F629810793009F2376 /* TweetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetService.swift; sourceTree = "<group>"; };
 		87F639F829811E21009F2376 /* Tweet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		87F639FA298132B5009F2376 /* TweetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
+		87F639FC298177BD009F2376 /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 		87E91BA62970476300A93AA8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				87F639FC298177BD009F2376 /* TweetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				87E91BAA2970487600A93AA8 /* MainTabController.swift in Sources */,
 				87E91BB62970516100A93AA8 /* ConversationsController.swift in Sources */,
 				8724914A2975AB8100528B8A /* LoginController.swift in Sources */,
+				87F639FD298177BD009F2376 /* TweetViewModel.swift in Sources */,
 				8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */,
 				87E91BAE297050E000A93AA8 /* FeedController.swift in Sources */,
 				873EBE01297B02F800B1DABF /* Constants.swift in Sources */,
