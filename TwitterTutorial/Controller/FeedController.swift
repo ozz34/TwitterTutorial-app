@@ -22,7 +22,15 @@ class FeedController: UIViewController {
         super.viewDidLoad()
 
         configureUI()
+        fetchTweets()
     }
+    //MARK: -API
+    func fetchTweets() {
+        TweetService.shared.fetchTweets { tweets in
+
+        }
+    }
+    
     //MARK: -Helpers
     func configureUI() {
         view.backgroundColor = .white
