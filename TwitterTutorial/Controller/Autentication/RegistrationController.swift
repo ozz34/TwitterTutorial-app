@@ -82,7 +82,7 @@ class RegistrationController: UIViewController {
     
     
     private lazy var alreadyHaveAccountButton: UIButton = {
-        let button = Utilities().createAttributebButton("Already have an account? ", "Log In")
+        let button = Utilities().createAttributeButton("Already have an account? ", "Log In")
         button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
        
         return button
@@ -101,14 +101,14 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration() {
-        guard let profileImage = profileImage else {
+        guard let profileImage else {
             print("Debug: Please select a profile image")
             return
         }
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
-        guard let userName = userNameTextField.text else { return }
+        guard let userName = userNameTextField.text?.lowercased() else { return }
         
 
         let authCredential = AuthCredentials(email: email,

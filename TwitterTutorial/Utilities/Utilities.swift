@@ -48,7 +48,7 @@ class Utilities {
         return tf
     }
     
-    func createAttributebButton(_ firstPart: String, _ secondPart: String) -> UIButton {
+    func createAttributeButton(_ firstPart: String, _ secondPart: String) -> UIButton {
         let button = UIButton(type: .system)
         
         let attributedTitle = NSMutableAttributedString(string: firstPart,

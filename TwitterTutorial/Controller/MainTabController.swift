@@ -40,11 +40,12 @@ class MainTabController: UITabBarController {
     //MARK: -API
     
     func fetchUser() {
-        UserService.shared.fetchUser { user in
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserService.shared.fetchUser(uid: uid) { user in
             self.user = user
         }
     }
-    
+
     func autenticateUserAndConfigureUI() {
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
@@ -92,7 +93,7 @@ class MainTabController: UITabBarController {
     
     func configureViewControllers() {
         
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(image: UIImage(named: "home_unselected") ?? UIImage(),
                                                 rootViewController: feed)
  
