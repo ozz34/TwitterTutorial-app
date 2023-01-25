@@ -55,6 +55,7 @@
 		87E91BB42970513800A93AA8 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB32970513800A93AA8 /* NotificationsController.swift */; };
 		87E91BB62970516100A93AA8 /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB52970516100A93AA8 /* ConversationsController.swift */; };
 		87F639F3297FDE70009F2376 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639F2297FDE70009F2376 /* UploadTweetController.swift */; };
+		87F639F5298013C8009F2376 /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F639F4298013C8009F2376 /* CaptionTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		87E91BB32970513800A93AA8 /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		87E91BB52970516100A93AA8 /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		87F639F2297FDE70009F2376 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
+		87F639F4298013C8009F2376 /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +204,7 @@
 		87E91BA72970476500A93AA8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				87F639F4298013C8009F2376 /* CaptionTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			files = (
 				87CFB000297EEA0500EC54A6 /* UserService.swift in Sources */,
 				87E91BB42970513800A93AA8 /* NotificationsController.swift in Sources */,
+				87F639F5298013C8009F2376 /* CaptionTextView.swift in Sources */,
 				87E91B8F2970450000A93AA8 /* AppDelegate.swift in Sources */,
 				877911312976BEA300D0C687 /* Utilities.swift in Sources */,
 				87E91BB02970511B00A93AA8 /* ExploreController.swift in Sources */,
