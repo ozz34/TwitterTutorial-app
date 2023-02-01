@@ -21,22 +21,30 @@ class TweetService {
                                      "retweets": 0,
                                      "caption": caption]
         
-        REF_TWEETS.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
-    }
-    
-    func fetchTweets(completion: @escaping([Tweet])-> Void) {
-        var tweets = [Tweet]()
+        let ref = REF_TWEETS.childByAutoId()
         
-        REF_TWEETS.observe(.childAdded) { snapshot  in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            guard let uid = dictionary["uid"] as? String else { return }
-            let tweetId = snapshot.key
+        ref.updateChildValues(values) { error, ref in
+            //update user-tweet structure after tweet upload completes
+            guard let tweetID = ref.key else { return }
+            REF_USER_TWEETS.child(uid).updateChildValues([tweetID:1], withCompletionBlock: completion)
+        }
+    }
+        
+        func fetchTweets(completion: @escaping([Tweet])-> Void) {
+            var tweets = [Tweet]()
             
-            UserService.shared.fetchUser(uid: uid) { user in
-                let tweet = Tweet(tweetId: tweetId, user: user, dictionary: dictionary)
-                tweets.append(tweet)
-                completion(tweets)
+            REF_TWEETS.observe(.childAdded) { snapshot  in
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                guard let uid = dictionary["uid"] as? String else { return }
+                let tweetId = snapshot.key
+                
+                UserService.shared.fetchUser(uid: uid) { user in
+                    let tweet = Tweet(tweetId: tweetId, user: user, dictionary: dictionary)
+                    tweets.append(tweet)
+                    completion(tweets)
+                }
             }
         }
     }
-}
+
+
