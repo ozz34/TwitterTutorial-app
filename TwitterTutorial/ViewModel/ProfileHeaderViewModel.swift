@@ -24,6 +24,9 @@ enum ProfileFilterOptions: Int, CaseIterable {
 struct ProfileHeaderViewModel {
     
     private let user: User
+   
+    let userNameText: String
+    let fullNameText: String
     
     var followersText: NSAttributedString? {
         return attributedText(withValue: 0, text: " followers")
@@ -43,6 +46,8 @@ struct ProfileHeaderViewModel {
     
     init(user: User){
         self.user = user
+        self.userNameText = "@" + user.userName
+        self.fullNameText = user.fullName
     }
     
     fileprivate func attributedText(withValue value: Int, text: String) -> NSAttributedString {

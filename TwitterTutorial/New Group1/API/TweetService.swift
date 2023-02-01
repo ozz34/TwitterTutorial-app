@@ -51,7 +51,6 @@ class TweetService {
         
         REF_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
             let tweetID = snapshot.key
-            print(snapshot.key)
             
             REF_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
                 guard let dictionary = snapshot.value as? [String: Any] else { return }
