@@ -14,6 +14,12 @@ class ProfileController: UICollectionViewController {
     
     private var user: User
     
+    private var tweets = [Tweet]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     //MARK: -Lyfecycle
     
     init(user: User) {
@@ -29,7 +35,7 @@ class ProfileController: UICollectionViewController {
         super.viewDidLoad()
         
         configureCollectionView()
-        
+        fetchTweets()
         
     }
     
@@ -40,9 +46,13 @@ class ProfileController: UICollectionViewController {
         navigationController?.navigationBar.isHidden = true
     }
     
-    //MARK: -Selectors
+    //MARK: -API
+    func fetchTweets() {
+        TweetService.shared.fetchTweets(forUser: user) { tweets in
+            self.tweets = tweets
+        }
+    }
     
-   
     //MARK: -Helpers
     
     func configureCollectionView() {
@@ -59,12 +69,14 @@ class ProfileController: UICollectionViewController {
 extension ProfileController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell
-            else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
+        
+        let tweet = tweets[indexPath.row]
+        cell.tweet = tweet
         
         return cell
     }
