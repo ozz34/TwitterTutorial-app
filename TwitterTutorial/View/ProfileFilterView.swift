@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ProfileFilterViewDelegate: AnyObject {
+    func filterView(_ view: UICollectionView, didSelect indexPath: IndexPath)
+}
+
 class ProfileFilterView: UIView {
     //MARK: -Properties
     private let identifier = "ProfileFilterCell"
+    
+    weak var delegate: ProfileFilterViewDelegate?
     
     private lazy var collectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
@@ -64,5 +70,8 @@ extension ProfileFilterView: UICollectionViewDelegateFlowLayout {
 }
 //MARK: -UICollectionViewDelegate
 extension ProfileFilterView: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.filterView(self.collectionView, didSelect: indexPath)
+    }
 }
+
