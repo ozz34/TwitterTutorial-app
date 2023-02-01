@@ -73,6 +73,7 @@ extension ProfileController {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath)
                 as? ProfileHeader else { return UICollectionReusableView() }
         header.user = user
+        header.delegate = self
         
         return header
     }
@@ -87,5 +88,12 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: view.frame.width, height: 120)
+    }
+}
+
+//MARK: - ProfileHeaderDelegate
+extension ProfileController: ProfileHeaderDelegate {
+    func handleDismissal() {
+        navigationController?.popViewController(animated: true)
     }
 }
