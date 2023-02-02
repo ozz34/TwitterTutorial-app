@@ -18,11 +18,31 @@ class ExploreController: UITableViewController {
         }
     }
     
+    private var filteredUsers = [User]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private var isSearchMode: Bool {
+        return searchController.isActive && !(searchController.searchBar.text!.isEmpty)
+    }
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    
     //MARK: -Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         fetchUsers()
+        configureSearchController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
+        searchController.searchBar.text = ""
     }
     
     //MARK: -API
@@ -40,20 +60,31 @@ class ExploreController: UITableViewController {
         tableView.rowHeight = 60
         tableView.separatorStyle = .none
     }
+    
+    func configureSearchController() {
+        searchController.searchResultsUpdater = self
+
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for a user"
+        navigationItem.searchController = searchController
+        definesPresentationContext = false
+    }
 }
 
 
 extension ExploreController {
     //MARK: -UITableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        users.count
+        return isSearchMode ? filteredUsers.count : users.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? UserCell else { return
             UITableViewCell() }
         
-        cell.user = users[indexPath.row]
+        let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+        cell.user = user
         
         return cell
     }
@@ -61,6 +92,15 @@ extension ExploreController {
     
     //MARK: -UITableViewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension ExploreController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else { return }
+        filteredUsers = users.filter({ $0.userName.contains(searchText)})
     }
 }
