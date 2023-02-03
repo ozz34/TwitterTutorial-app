@@ -117,6 +117,10 @@ extension ProfileController: ProfileHeaderDelegate {
     
     func handleEditProfileFollow() {
         
+        if user.isCurrentUser {
+            return
+        }
+        
         if user.isFollowed {
             UserService.shared.unfollowUser(uid: user.uid) { ref, err in
                 self.user.isFollowed = false
