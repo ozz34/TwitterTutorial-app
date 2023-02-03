@@ -107,12 +107,20 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - ProfileHeaderDelegate
 extension ProfileController: ProfileHeaderDelegate {
+    
     func handleEditProfileFollow() {
-        UserService.shared.followUser(uid: user.uid) { ref, err in
-            
+        
+        if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user.uid) { ref, err in
+                self.user.isFollowed = false
+            }
+        } else {
+            UserService.shared.followUser(uid: user.uid) { ref, err in
+                self.user.isFollowed = true
+            }
         }
     }
-    
+
     func handleDismissal() {
         navigationController?.popViewController(animated: true)
     }
