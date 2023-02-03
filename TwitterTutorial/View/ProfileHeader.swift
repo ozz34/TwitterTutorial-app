@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileHeaderDelegate: AnyObject {
     func handleDismissal()
+    func handleEditProfileFollow()
 }
 
 class ProfileHeader: UICollectionReusableView {
@@ -48,7 +49,7 @@ class ProfileHeader: UICollectionReusableView {
     
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 80 / 2
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -197,7 +198,7 @@ class ProfileHeader: UICollectionReusableView {
     }
     
     @objc func handleEditProfileFollow() {
-        
+        delegate?.handleEditProfileFollow()
     }
     
     @objc func handleFollowersTapped() {
