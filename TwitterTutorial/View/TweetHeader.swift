@@ -9,6 +9,13 @@ import UIKit
 
 class TweetHeader: UICollectionReusableView {
     //MARK: -Properties
+    
+    var tweet: Tweet? {
+        didSet {
+            configure()
+        }
+    }
+    
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -24,14 +31,14 @@ class TweetHeader: UICollectionReusableView {
         return iv
     }()
     
-    let fullNameLabel: UILabel = {
+    private let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.text = "Peter Parker"
         return label
     }()
     
-    let userNameLabel: UILabel = {
+   private let userNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
@@ -40,7 +47,7 @@ class TweetHeader: UICollectionReusableView {
         return label
     }()
     
-    let captionLabel: UILabel = {
+    private let captionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
@@ -49,7 +56,7 @@ class TweetHeader: UICollectionReusableView {
         return label
     }()
     
-    let dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .lightGray
         label.font = UIFont.boldSystemFont(ofSize: 14)
@@ -103,21 +110,8 @@ class TweetHeader: UICollectionReusableView {
         return view
     }()
     
-    private lazy var retweetsLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "2 retweets"
-        
-        return label
-    }()
-    
-    private lazy var likesLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "0 likes"
-        
-        return label
-    }()
+    private let retweetsLabel = UILabel()
+    private let likesLabel = UILabel()
     
     private lazy var commentButton: UIButton = {
       let button = createButton(withImageName: "comment")
@@ -235,8 +229,22 @@ class TweetHeader: UICollectionReusableView {
     }
     
     
-    
     //MARK: -Helpers
+    func configure() {
+        guard let tweet else { return }
+        
+        let viewModel = TweetViewModel(tweet: tweet)
+        
+        captionLabel.text = tweet.caption
+        fullNameLabel.text = tweet.user.fullName
+        userNameLabel.text = viewModel.userNameText
+        profileImageView.sd_setImage(with: viewModel.profileImageUrl)
+        dateLabel.text = viewModel.headerTimestamp
+        retweetsLabel.attributedText = viewModel.retweetsAttributedString
+        likesLabel.attributedText = viewModel.likesAttributedString
+        
+    }
+    
     func createButton(withImageName imageName: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName), for: .normal)
