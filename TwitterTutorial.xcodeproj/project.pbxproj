@@ -240,9 +240,9 @@
 				87F639FA298132B5009F2376 /* TweetCell.swift */,
 				878EA89129882D8900F63AC6 /* ProfileHeader.swift */,
 				87C4BA74298945B800B69423 /* ProfileFilterView.swift */,
-				87C4BA762989519D00B69423 /* ProfileFilterCell.swift */,
 				87355097298C025400163DF5 /* UserCell.swift */,
 				8778ECCD29914A3F0091237C /* TweetHeader.swift */,
+				87C4BA762989519D00B69423 /* ProfileFilterCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
