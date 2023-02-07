@@ -49,7 +49,7 @@ class TweetHeader: UICollectionReusableView {
     
     private let captionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
         label.text = "Some Text"
         
@@ -163,7 +163,7 @@ class TweetHeader: UICollectionReusableView {
         captionLabel.anchor(top: stack.bottomAnchor,
                             left: leftAnchor,
                             right: rightAnchor,
-                            paddingTop: 20,
+                            paddingTop: 12,
                             paddingLeft: 16,
                             paddingRight: 16)
         
@@ -174,11 +174,9 @@ class TweetHeader: UICollectionReusableView {
                             paddingLeft: 16)
         
         addSubview(optionsButton)
-        optionsButton.anchor(top: topAnchor,
-                             right: rightAnchor,
-                             paddingTop: 16,
-                             paddingRight: 16)
-        
+        optionsButton.centerY(inView: stack)
+        optionsButton.anchor(right: rightAnchor, paddingRight: 8)
+
         addSubview(statsView)
         statsView.anchor(top: dateLabel.bottomAnchor,
                          left: leftAnchor,
