@@ -11,6 +11,11 @@ class TweetController: UICollectionViewController {
     
     //MARK: -Properties
     private let tweet: Tweet
+    private var replies = [Tweet]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     private let identifier = "TweetCell"
     private let headerIdentifier = "TweetHeader"
@@ -30,6 +35,14 @@ class TweetController: UICollectionViewController {
         super.viewDidLoad()
 
         configureCollectionView()
+        fetchReplies()
+    }
+    
+    //MARK: -API
+    func fetchReplies() {
+        TweetService.shared.fetchReplies(forTweet: tweet) { replies in
+            self.replies = replies
+        }
     }
   
     //MARK: -Helpers
@@ -56,11 +69,13 @@ extension TweetController {
 //MARK: - UICollectionViewDataSource
 extension TweetController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        replies.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
+        
+        cell.tweet = replies[indexPath.row]
         
         return cell
     }

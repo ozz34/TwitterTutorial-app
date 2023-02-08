@@ -12,7 +12,8 @@ class TweetService {
     static let shared = TweetService()
     private init() {}
     
-    func uploadTweet(caption: String, type: UploadTweetConfiguration, completion: @escaping(Error?, DatabaseReference)-> Void) {
+    func uploadTweet(caption: String, type: UploadTweetConfiguration,
+                     completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let values: [String: Any] = ["uid": uid,
@@ -24,9 +25,9 @@ class TweetService {
         switch type {
         case .tweet:
             REF_TWEETS.childByAutoId().updateChildValues(values) { error, ref in
-            //update user-tweet structure after tweet upload completes
-            guard let tweetID = ref.key else { return }
-            REF_USER_TWEETS.child(uid).updateChildValues([tweetID:1], withCompletionBlock: completion)
+                //update user-tweet structure after tweet upload completes
+                guard let tweetID = ref.key else { return }
+                REF_USER_TWEETS.child(uid).updateChildValues([tweetID:1], withCompletionBlock: completion)
             }
         case .reply(let tweet):
             REF_TWEET_REPLIES.child(tweet.tweetId).childByAutoId()
@@ -65,6 +66,23 @@ class TweetService {
                     tweets.append(tweet)
                     completion(tweets)
                 }
+            }
+        }
+    }
+    
+    func fetchReplies(forTweet tweet: Tweet, completion: @escaping([Tweet])-> Void) {
+        var tweets = [Tweet]()
+        
+        REF_TWEET_REPLIES.child(tweet.tweetId).observe(.childAdded) { snapshot in
+            let tweetID = snapshot.key
+            
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            guard let uid = dictionary["uid"] as? String else { return }
+            
+            UserService.shared.fetchUser(uid: uid) { user in
+                let tweet = Tweet(tweetId: tweetID, user: user, dictionary: dictionary)
+                tweets.append(tweet)
+                completion(tweets)
             }
         }
     }
