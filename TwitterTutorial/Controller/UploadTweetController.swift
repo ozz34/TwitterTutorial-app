@@ -70,12 +70,6 @@ class UploadTweetController: UIViewController {
         
         configureUI()
         
-        switch config {
-        case .tweet:
-            print("confix tweet")
-        case .reply(let tweet):
-            print(tweet.caption)
-        }
     }
     
     //MARK: -Selectors
@@ -85,7 +79,7 @@ class UploadTweetController: UIViewController {
     
     @objc func handleUploadTweet() {
         guard let caption = captionTextView.text else { return }
-        TweetService.shared.uploadTweet(caption: caption) { error, ref in
+        TweetService.shared.uploadTweet(caption: caption, type: config) { error, ref in
             if let error {
                 print("Debug: Failed to upload tweet with error: \(error.localizedDescription)")
                 return
