@@ -22,7 +22,7 @@ enum ActionSheetOptions {
         case .report:
             return "Report Tweet"
         case .delete:
-           return "Delete Tweet"
+            return "Delete Tweet"
         }
     }
 }
@@ -41,7 +41,6 @@ struct ActionSheetViewModel {
             results.append(followOption)
         }
         results.append(.report)
-        
         return results
     }
 
