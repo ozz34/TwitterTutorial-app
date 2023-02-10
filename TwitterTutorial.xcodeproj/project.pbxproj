@@ -23,6 +23,7 @@
 		87AE478429759AAB0035ACF9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AE478329759AAB0035ACF9 /* Extensions.swift */; };
 		87C4BA75298945B800B69423 /* ProfileFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C4BA74298945B800B69423 /* ProfileFilterView.swift */; };
 		87C4BA772989519D00B69423 /* ProfileFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C4BA762989519D00B69423 /* ProfileFilterCell.swift */; };
+		87CA6C0C29965EEA00270E15 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CA6C0B29965EEA00270E15 /* ActionSheetViewModel.swift */; };
 		87CFAFC8297ECCDF00EC54A6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 87CFAFC7297ECCDF00EC54A6 /* FirebaseAnalytics */; };
 		87CFAFCA297ECCE400EC54A6 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 87CFAFC9297ECCE400EC54A6 /* FirebaseAnalyticsOnDeviceConversion */; };
 		87CFAFCC297ECCE700EC54A6 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 87CFAFCB297ECCE700EC54A6 /* FirebaseAnalyticsSwift */; };
@@ -90,6 +91,7 @@
 		87AE478329759AAB0035ACF9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		87C4BA74298945B800B69423 /* ProfileFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterView.swift; sourceTree = "<group>"; };
 		87C4BA762989519D00B69423 /* ProfileFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterCell.swift; sourceTree = "<group>"; };
+		87CA6C0B29965EEA00270E15 /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
 		87CFAFFF297EEA0500EC54A6 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		87CFB001297EF54600EC54A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		87E91B8E2970450000A93AA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				87F639FC298177BD009F2376 /* TweetViewModel.swift */,
 				87713A08298A8C7B00D06F92 /* ProfileHeaderViewModel.swift */,
 				87EB71392992BB00003E4176 /* UploadTweetViewModel.swift */,
+				87CA6C0B29965EEA00270E15 /* ActionSheetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				8724914A2975AB8100528B8A /* LoginController.swift in Sources */,
 				8778ECCE29914A3F0091237C /* TweetHeader.swift in Sources */,
 				87F639FD298177BD009F2376 /* TweetViewModel.swift in Sources */,
+				87CA6C0C29965EEA00270E15 /* ActionSheetViewModel.swift in Sources */,
 				8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */,
 				87E91BAE297050E000A93AA8 /* FeedController.swift in Sources */,
 				873EBE01297B02F800B1DABF /* Constants.swift in Sources */,
