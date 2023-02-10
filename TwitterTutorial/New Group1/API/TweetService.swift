@@ -106,6 +106,13 @@ class TweetService {
             }
         }
     }
+    
+    func checkIsUserLikedTweet(tweet: Tweet, completion: @escaping(Bool) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        REF_USER_LIKES.child(uid).child(tweet.tweetId).observeSingleEvent(of: .value) {snapshot in
+            completion(snapshot.exists())
+        }
+    }
 }
-
 
