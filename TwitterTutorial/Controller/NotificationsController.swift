@@ -14,7 +14,7 @@ class NotificationsController: UITableViewController {
     private let identifier = "NotificationCell"
     private var notifications = [Notification]() {
         didSet {
-            
+            tableView.reloadData()
         }
     }
     
@@ -23,8 +23,16 @@ class NotificationsController: UITableViewController {
         super.viewDidLoad()
 
         configureUI()
+        fetchNotifications()
     }
-  
+    
+    //MARK: -API
+    func fetchNotifications() {
+        NotificationService.shared.fetchNotifications { notifications in
+            self.notifications = notifications
+        }
+    }
+    
     //MARK: -Helpers
     func configureUI() {
         view.backgroundColor = .white
@@ -39,7 +47,7 @@ class NotificationsController: UITableViewController {
 
 extension NotificationsController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        notifications.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
