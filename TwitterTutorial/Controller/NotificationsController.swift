@@ -53,6 +53,8 @@ extension NotificationsController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NotificationCell else { return UITableViewCell()}
         
+        cell.notification = notifications[indexPath.row]
+        
         return cell
     }
 }
