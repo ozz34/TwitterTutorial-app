@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ProfileFilterViewDelegate: AnyObject {
-    func filterView(_ view: UICollectionView, didSelect indexPath: IndexPath)
+    func filterView(_ view: ProfileFilterView, didSelect index: Int)
 }
 
 class ProfileFilterView: UIView {
@@ -99,7 +99,7 @@ extension ProfileFilterView: UICollectionViewDelegate {
             self.underLineView.frame.origin.x = xPosition
         }
         
-        delegate?.filterView(self.collectionView, didSelect: indexPath)
+        delegate?.filterView(self, didSelect: indexPath.row)
     }
 }
 
