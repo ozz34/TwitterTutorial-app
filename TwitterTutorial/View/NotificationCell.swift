@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol NotificationCellDelegate: AnyObject {
+    func didTapProfileImage(_ cell: NotificationCell)
+}
+
 class NotificationCell: UITableViewCell {
     
     //MARK: -Properties
@@ -15,6 +19,8 @@ class NotificationCell: UITableViewCell {
             configure()
         }
     }
+    
+    weak var delegate: NotificationCellDelegate?
     
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -49,7 +55,7 @@ class NotificationCell: UITableViewCell {
         stack.spacing = 8
         stack.alignment = .center
         
-        addSubview(stack)
+        self.contentView.addSubview(stack)
         stack.centerY(inView: self,
                       leftAnchor: leftAnchor,
                       paddingLeft: 12)
@@ -60,9 +66,10 @@ class NotificationCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: -Selectors
     @objc func handleProfileImageTapped() {
-        
+        delegate?.didTapProfileImage(self)
     }
     
     //MARK: -Helpers
@@ -70,7 +77,7 @@ class NotificationCell: UITableViewCell {
         guard let notification else { return }
         let viewModel = NotificationViewModel(notification: notification)
         
-        profileImageView.sd_setImage(with: viewModel.profileimageUrl)
+        profileImageView.sd_setImage(with: viewModel.profileImageUrl)
         notificationLabel.attributedText = viewModel.notificationText
     }
 }

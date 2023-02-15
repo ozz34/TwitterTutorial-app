@@ -51,21 +51,27 @@ class TweetService {
         }
     }
     
-    func fetchTweets(forUser user: User, completion: @escaping([Tweet]) -> Void) -> Void {
+    func fetchTweets(forUser user: User, completion: @escaping([Tweet]) -> Void) {
         var tweets = [Tweet]()
         
         REF_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
-            let tweetID = snapshot.key
+            let tweetId = snapshot.key
             
-            REF_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
-                guard let dictionary = snapshot.value as? [String: Any] else { return }
-                guard let uid = dictionary["uid"] as? String else { return }
-                
-                UserService.shared.fetchUser(uid: uid) { user in
-                    let tweet = Tweet(tweetId: tweetID, user: user, dictionary: dictionary)
-                    tweets.append(tweet)
-                    completion(tweets)
-                }
+            self.fetchTweet(withTweetId: tweetId) { tweet in
+                tweets.append(tweet)
+                completion(tweets)
+            }
+        }
+    }
+    
+    func fetchTweet(withTweetId tweetId: String, completion: @escaping (Tweet) -> Void) {
+        REF_TWEETS.child(tweetId).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            guard let uid = dictionary["uid"] as? String else { return }
+            
+            UserService.shared.fetchUser(uid: uid) { user in
+                let tweet = Tweet(tweetId: tweetId, user: user, dictionary: dictionary)
+                completion(tweet)
             }
         }
     }

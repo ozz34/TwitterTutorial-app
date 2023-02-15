@@ -45,7 +45,7 @@ struct NotificationViewModel {
         return attributedText
     }
     
-    var profileimageUrl: URL? {
+    var profileImageUrl: URL? {
         user.profileImageUrl
     }
 

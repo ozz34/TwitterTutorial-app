@@ -26,7 +26,7 @@ struct Notification {
     init(user: User, dictionary: [String: Any]) {
         self.user = user
         
-        self.tweetId = dictionary["tweetId"] as? String ?? ""
+        self.tweetId = dictionary["tweetID"] as? String ?? ""
         
         if let timestamp = dictionary["timestamp"] as? Double {
             self.timestamp = Date(timeIntervalSince1970: timestamp)
