@@ -16,7 +16,7 @@ class TweetService {
                      completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        let values: [String: Any] = ["uid": uid,
+        var values: [String: Any] = ["uid": uid,
                                      "timestamp": Int(NSDate().timeIntervalSince1970),
                                      "likes": 0,
                                      "retweets": 0,
@@ -29,7 +29,9 @@ class TweetService {
                 guard let tweetID = ref.key else { return }
                 REF_USER_TWEETS.child(uid).updateChildValues([tweetID:1], withCompletionBlock: completion)
             }
+       
         case .reply(let tweet):
+            values["replyingTo"] = tweet.user.userName
             
             REF_TWEET_REPLIES.child(tweet.tweetId).childByAutoId()
                 .updateChildValues(values) { err, ref in
