@@ -29,6 +29,13 @@ class TweetController: UICollectionViewController {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
