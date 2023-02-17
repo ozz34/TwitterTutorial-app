@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol EditProfileControllerDelegate: AnyObject {
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User)
+}
+
 class EditProfileController: UITableViewController {
     //MARK: -Properties
     private var user: User
+    
+    weak var delegate: EditProfileControllerDelegate?
     
     private lazy var headerView = EditProfileHeader(user: user)
     private let identifier = "EditProfileCell"
@@ -17,6 +23,12 @@ class EditProfileController: UITableViewController {
     private var selectedImage: UIImage? {
         didSet {
             headerView.profileImageView.image = selectedImage
+        }
+    }
+    
+    private var userInfoChanged = false {
+        didSet {
+            navigationItem.rightBarButtonItem?.isEnabled = userInfoChanged
         }
     }
     
@@ -42,10 +54,15 @@ class EditProfileController: UITableViewController {
         dismiss(animated: true)
     }
     @objc func handleDone() {
-        dismiss(animated: true)
+       updateUserData()
     }
     
     //MARK: -API
+    func updateUserData() {
+        UserService.shared.saveUserData(user: user) { err, ref in
+            self.delegate?.controller(self, wantsToUpdate: self.user)
+        }
+    }
     
     //MARK: -Helpers
     
@@ -114,6 +131,8 @@ extension EditProfileController: EditProfileHeaderDelegate {
 extension EditProfileController: EditProfileCellDelegate {
     func updateUserInfo(_ cell: EditProfileCell) {
         guard let viewModel = cell.viewModel else { return }
+        userInfoChanged = true
+
         switch viewModel.option {
         case .fullName:
             guard let fullName = cell.infoTextField.text else { return }
