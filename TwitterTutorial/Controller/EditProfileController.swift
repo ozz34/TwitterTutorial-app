@@ -11,6 +11,8 @@ class EditProfileController: UITableViewController {
     //MARK: -Properties
     private let user: User
     
+    private lazy var headerView = EditProfileHeader(user: user)
+    
     //MARK: -Lyfecycle
     init(user: User) {
         self.user = user
@@ -23,6 +25,7 @@ class EditProfileController: UITableViewController {
     
     override func viewDidLoad() {
         configureNavigationBar()
+        configureTableView()
     }
 
     //MARK: -Selectors
@@ -51,6 +54,18 @@ class EditProfileController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(handleDone))
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
+    
+    func configureTableView() {
+        tableView.tableHeaderView = headerView
+        headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
+        tableView.tableFooterView = UIView()
+        headerView.delegate = self
+    
+    }
 }
-
+extension EditProfileController: EditProfileHeaderDelegate {
+    func didTapChangeProfilePhoto() {
+        print("sds")
+    }
+}
 
