@@ -26,4 +26,34 @@ enum  EditProfileOptions: Int, CaseIterable {
 
 struct EditProfileViewModel {
     
+    private let user: User
+    let option: EditProfileOptions
+    
+    var titleText: String {
+        option.description
+    }
+    
+    var optionValue: String? {
+        switch option {
+        case .fullName:
+            return user.fullName
+        case .userName:
+            return user.userName
+        case .bio:
+            return user.bio
+        }
+    }
+    
+    var shouldHideTextField: Bool {
+        option == .bio
+    }
+    
+    var shouldHideTextView: Bool {
+        option != .bio
+    }
+    
+    init(user: User, option: EditProfileOptions) {
+        self.user = user
+        self.option = option
+    }
 }
