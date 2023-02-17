@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8708524E299F7E4000F05D94 /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8708524D299F7E4000F05D94 /* EditProfileController.swift */; };
 		87085251299FA2AC00F05D94 /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87085250299FA2AC00F05D94 /* EditProfileHeader.swift */; };
+		87085253299FAC2500F05D94 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87085252299FAC2500F05D94 /* EditProfileViewModel.swift */; };
+		87085255299FACFC00F05D94 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87085254299FACFC00F05D94 /* EditProfileCell.swift */; };
 		8724914A2975AB8100528B8A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872491492975AB8100528B8A /* LoginController.swift */; };
 		8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8724914B2975AC5800528B8A /* RegistrationController.swift */; };
 		872D3C4529786FB700D9EC0F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */; };
@@ -83,6 +85,8 @@
 /* Begin PBXFileReference section */
 		8708524D299F7E4000F05D94 /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		87085250299FA2AC00F05D94 /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
+		87085252299FAC2500F05D94 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		87085254299FACFC00F05D94 /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
 		872491492975AB8100528B8A /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		8724914B2975AC5800528B8A /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 				87C4BA74298945B800B69423 /* ProfileFilterView.swift */,
 				87C4BA762989519D00B69423 /* ProfileFilterCell.swift */,
 				87085250299FA2AC00F05D94 /* EditProfileHeader.swift */,
+				87085254299FACFC00F05D94 /* EditProfileCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -263,6 +268,7 @@
 				87EB71392992BB00003E4176 /* UploadTweetViewModel.swift */,
 				87CA6C0B29965EEA00270E15 /* ActionSheetViewModel.swift */,
 				87631A4F299BB8B200BDB1D9 /* NotificationViewModel.swift */,
+				87085252299FAC2500F05D94 /* EditProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -413,6 +419,7 @@
 				8778ECCC299146630091237C /* TweetController.swift in Sources */,
 				878EA89029880F1700F63AC6 /* ProfileController.swift in Sources */,
 				878EA89229882D8900F63AC6 /* ProfileHeader.swift in Sources */,
+				87085255299FACFC00F05D94 /* EditProfileCell.swift in Sources */,
 				87F639FB298132B5009F2376 /* TweetCell.swift in Sources */,
 				87E91B912970450000A93AA8 /* SceneDelegate.swift in Sources */,
 				87631A4A299B5AFB00BDB1D9 /* Notification.swift in Sources */,
@@ -429,6 +436,7 @@
 				87F639FD298177BD009F2376 /* TweetViewModel.swift in Sources */,
 				87CA6C0C29965EEA00270E15 /* ActionSheetViewModel.swift in Sources */,
 				87631A4E299BABBC00BDB1D9 /* NotificationCell.swift in Sources */,
+				87085253299FAC2500F05D94 /* EditProfileViewModel.swift in Sources */,
 				8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */,
 				87E91BAE297050E000A93AA8 /* FeedController.swift in Sources */,
 				873EBE01297B02F800B1DABF /* Constants.swift in Sources */,

@@ -12,6 +12,7 @@ class EditProfileController: UITableViewController {
     private let user: User
     
     private lazy var headerView = EditProfileHeader(user: user)
+    private let identifier = "EditProfileCell"
     
     //MARK: -Lyfecycle
     init(user: User) {
@@ -60,12 +61,37 @@ class EditProfileController: UITableViewController {
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
         tableView.tableFooterView = UIView()
         headerView.delegate = self
-    
+        
+        tableView.register(EditProfileCell.self, forCellReuseIdentifier: identifier)
     }
 }
+
+//MARK: - UITableViewDataSource
+extension EditProfileController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        EditProfileOptions.allCases.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? EditProfileCell else { return UITableViewCell()}
+        
+        
+        
+        return cell
+    }
+}
+//MARK: - UITableViewDelegate
+extension EditProfileController {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let option = EditProfileOptions(rawValue: indexPath.row) else { return 0 }
+        return option == .bio ? 100 : 48
+    }
+}
+
+//MARK: - EditProfileHeaderDelegate
 extension EditProfileController: EditProfileHeaderDelegate {
     func didTapChangeProfilePhoto() {
-        print("sds")
+
     }
 }
 
