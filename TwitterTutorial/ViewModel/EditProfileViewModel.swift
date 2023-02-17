@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum  EditProfileOptions: Int, CaseIterable {
+enum EditProfileOptions: Int, CaseIterable {
     case fullName
     case userName
     case bio

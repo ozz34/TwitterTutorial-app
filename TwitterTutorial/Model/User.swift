@@ -10,8 +10,8 @@ import Firebase
 
 struct User {
     let email: String
-    let fullName: String
-    let userName: String
+    var fullName: String
+    var userName: String
     var profileImageUrl: URL?
     let uid: String
     var isFollowed = false
