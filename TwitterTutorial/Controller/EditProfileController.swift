@@ -20,6 +20,7 @@ class EditProfileController: UITableViewController {
     private lazy var headerView = EditProfileHeader(user: user)
     private let identifier = "EditProfileCell"
     private let imagePicker = UIImagePickerController()
+   
     private var selectedImage: UIImage? {
         didSet {
             headerView.profileImageView.image = selectedImage
@@ -29,6 +30,12 @@ class EditProfileController: UITableViewController {
     private var userInfoChanged = false {
         didSet {
             navigationItem.rightBarButtonItem?.isEnabled = userInfoChanged
+        }
+    }
+    
+    private var imageChanged = false {
+        didSet {
+            navigationItem.rightBarButtonItem?.isEnabled = imageChanged
         }
     }
     
@@ -54,18 +61,38 @@ class EditProfileController: UITableViewController {
         dismiss(animated: true)
     }
     @objc func handleDone() {
+       view.endEditing(true)
        updateUserData()
     }
     
     //MARK: -API
     func updateUserData() {
-        UserService.shared.saveUserData(user: user) { err, ref in
+        if imageChanged && !userInfoChanged {
+            updateProfileImage()
+        }
+        
+        if !imageChanged && userInfoChanged {
+            UserService.shared.saveUserData(user: user) { err, ref in
+                self.delegate?.controller(self, wantsToUpdate: self.user)
+            }
+        }
+        
+        if imageChanged && userInfoChanged {
+            UserService.shared.saveUserData(user: user) { err, ref in
+                self.updateProfileImage()
+            }
+        }
+    }
+    
+    func updateProfileImage() {
+        guard let image = selectedImage else { return }
+        UserService.shared.updateProfileImage(image: image) { profileImageURL in
+            self.user.profileImageUrl = profileImageURL
             self.delegate?.controller(self, wantsToUpdate: self.user)
         }
     }
     
     //MARK: -Helpers
-    
     func configureNavigationBar() {
 
         navigationController?.navigationBar.barTintColor = .twitterBlue
@@ -152,6 +179,7 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
         
         guard let image = info[.editedImage] as? UIImage else { return }
         self.selectedImage = image
+        imageChanged = true
         
         dismiss(animated: true)
     }

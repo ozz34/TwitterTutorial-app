@@ -75,7 +75,7 @@ class EditProfileCell: UITableViewCell {
                            bottom: bottomAnchor,
                            right: rightAnchor,
                            paddingTop: 4,
-                           paddingLeft: 16,
+                           paddingLeft: 14,
                            paddingRight: 8)
         
         NotificationCenter.default.addObserver(self,
@@ -96,10 +96,13 @@ class EditProfileCell: UITableViewCell {
     //MARK: -Helpers
     func configure() {
         guard let viewModel else { return }
-        infoTextField.isHidden = viewModel.shouldHideTextField
         bioTextView.isHidden = viewModel.shouldHideTextView
         titleLabel.text = viewModel.titleText
+        
+        infoTextField.isHidden = viewModel.shouldHideTextField
         infoTextField.text = viewModel.optionValue
+        
+        bioTextView.placeholderLabel.isHidden = viewModel.shouldHidePlaceholderLabel
         bioTextView.text = viewModel.optionValue
     }
 }

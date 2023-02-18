@@ -83,4 +83,22 @@ class UserService {
         
         REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)  
     }
+    
+    func updateProfileImage(image: UIImage, completion: @escaping(URL?)-> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.3) else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let fileName = NSUUID().uuidString
+        let ref = STORAGE_PROFILE_IMAGES.child(fileName)
+        
+        ref.putData(imageData) { meta, err in
+            ref.downloadURL { url, err in
+                guard let profileImageUrl = url?.absoluteString else { return }
+                
+                let values = ["profileImageUrl": profileImageUrl]
+                REF_USERS.child(uid).updateChildValues(values) { err, ref in
+                    completion(url)
+                }
+            }
+        }
+    }
 }
