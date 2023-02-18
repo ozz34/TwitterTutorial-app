@@ -41,7 +41,7 @@ class UploadTweetController: UIViewController {
         return iv
     }()
     
-    private let captionTextView = CaptionTextView()
+    private let captionTextView = InputTextView()
     
     private lazy var replyLabel: UILabel = {
        let label = UILabel()
