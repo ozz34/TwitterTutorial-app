@@ -27,11 +27,22 @@ class NotificationService {
         }
         REF_NOTIFICATIONS.child(user.uid).childByAutoId().updateChildValues(values)
     }
-    
+        
     func fetchNotifications(completion: @escaping([Notification])-> Void) {
-        var notifications = [Notification]()
+        let notifications = [Notification]()
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
+        REF_NOTIFICATIONS.child(uid).observeSingleEvent(of: .value) { snapshot in
+            if !snapshot.exists() {
+                completion(notifications)
+            } else {
+                self.getNotifications(uid: uid, completion: completion)
+            }
+        }
+    }
+    
+    fileprivate func getNotifications(uid: String, completion: @escaping([Notification]) -> Void) {
+        var notifications = [Notification]()
         REF_NOTIFICATIONS.child(uid).observe(.childAdded) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             guard let uid = dictionary["uid"] as? String else { return }
