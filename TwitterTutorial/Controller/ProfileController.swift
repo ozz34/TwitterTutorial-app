@@ -193,7 +193,7 @@ extension ProfileController: ProfileHeaderDelegate {
                 self.user.stats?.followers += 1
                 self.collectionView.reloadData()
                 
-                NotificationService.shared.uploadNotification(type: .follow, user: self.user)
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .follow)
             }
         }
     }
