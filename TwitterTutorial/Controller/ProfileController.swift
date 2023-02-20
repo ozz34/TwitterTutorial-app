@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileController: UICollectionViewController {
     //MARK: -Properties
@@ -211,6 +212,17 @@ extension ProfileController: ProfileHeaderDelegate {
 
 //MARK: - EditProfileControllerDelegate
 extension ProfileController: EditProfileControllerDelegate {
+    func handleLogout() {
+            do {
+                try Auth.auth().signOut()
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true)
+            } catch let error {
+                print("Error: \(error.localizedDescription)")
+            }
+    }
+    
     func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
         controller.dismiss(animated: true)
         self.user = user
