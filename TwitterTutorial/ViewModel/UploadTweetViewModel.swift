@@ -13,12 +13,13 @@ enum UploadTweetConfiguration {
 }
 
 struct UploadTweetViewModel {
-    
+    //MARK: -Properties
     let actionButtonTitle: String
     let placeholderText: String
     var shouldShowReplyLabel: Bool
     var replyText: String?
     
+    //MARK: -Lyfecycle
     init(config: UploadTweetConfiguration) {
         switch config {
         case .tweet:
@@ -32,5 +33,4 @@ struct UploadTweetViewModel {
             replyText = "Replying to @\(tweet.user.userName)"
         }
     }
-    
 }

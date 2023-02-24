@@ -12,6 +12,7 @@
 		87085253299FAC2500F05D94 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87085252299FAC2500F05D94 /* EditProfileViewModel.swift */; };
 		87085255299FACFC00F05D94 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87085254299FACFC00F05D94 /* EditProfileCell.swift */; };
 		8723581829A1222D00849220 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 8723581729A1222D00849220 /* ActiveLabel */; };
+		8723581A29A3AD2400849220 /* EditProfileFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8723581929A3AD2400849220 /* EditProfileFooter.swift */; };
 		8724914A2975AB8100528B8A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872491492975AB8100528B8A /* LoginController.swift */; };
 		8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8724914B2975AC5800528B8A /* RegistrationController.swift */; };
 		872D3C4529786FB700D9EC0F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */; };
@@ -69,7 +70,7 @@
 		87E91B9B2970450200A93AA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87E91B992970450200A93AA8 /* LaunchScreen.storyboard */; };
 		87E91BAA2970487600A93AA8 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BA92970487600A93AA8 /* MainTabController.swift */; };
 		87E91BAE297050E000A93AA8 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BAD297050E000A93AA8 /* FeedController.swift */; };
-		87E91BB02970511B00A93AA8 /* ExploreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BAF2970511B00A93AA8 /* ExploreController.swift */; };
+		87E91BB02970511B00A93AA8 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BAF2970511B00A93AA8 /* SearchController.swift */; };
 		87E91BB42970513800A93AA8 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB32970513800A93AA8 /* NotificationsController.swift */; };
 		87E91BB62970516100A93AA8 /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E91BB52970516100A93AA8 /* ConversationsController.swift */; };
 		87EB713A2992BB00003E4176 /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EB71392992BB00003E4176 /* UploadTweetViewModel.swift */; };
@@ -88,9 +89,10 @@
 		87085250299FA2AC00F05D94 /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
 		87085252299FAC2500F05D94 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		87085254299FACFC00F05D94 /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
+		8723581929A3AD2400849220 /* EditProfileFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileFooter.swift; sourceTree = "<group>"; };
 		872491492975AB8100528B8A /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		8724914B2975AC5800528B8A /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
-		872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TwitterTutorial/App/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		87355097298C025400163DF5 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		873EBE00297B02F800B1DABF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8740D481297BD751001D7E95 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -119,7 +121,7 @@
 		87E91B9C2970450200A93AA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87E91BA92970487600A93AA8 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		87E91BAD297050E000A93AA8 /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
-		87E91BAF2970511B00A93AA8 /* ExploreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreController.swift; sourceTree = "<group>"; };
+		87E91BAF2970511B00A93AA8 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		87E91BB32970513800A93AA8 /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		87E91BB52970516100A93AA8 /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		87EB71392992BB00003E4176 /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				87C4BA762989519D00B69423 /* ProfileFilterCell.swift */,
 				87085250299FA2AC00F05D94 /* EditProfileHeader.swift */,
 				87085254299FACFC00F05D94 /* EditProfileCell.swift */,
+				8723581929A3AD2400849220 /* EditProfileFooter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -194,10 +197,38 @@
 			path = Autentication;
 			sourceTree = "<group>";
 		};
+		8793CBB229A6202B00C8A268 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B972970450200A93AA8 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8793CBB329A6204700C8A268 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B8E2970450000A93AA8 /* AppDelegate.swift */,
+				87E91B902970450000A93AA8 /* SceneDelegate.swift */,
+				87E91B9C2970450200A93AA8 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8793CBB429A6217300C8A268 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B992970450200A93AA8 /* LaunchScreen.storyboard */,
+				87E91B942970450000A93AA8 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		87E91B822970450000A93AA8 = {
 			isa = PBXGroup;
 			children = (
 				87E91B8D2970450000A93AA8 /* TwitterTutorial */,
+				872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */,
 				874E006A297FA7D900445093 /* TwitterTutorial.app */,
 			);
 			sourceTree = "<group>";
@@ -211,13 +242,9 @@
 				87E91BA52970476100A93AA8 /* Controller */,
 				87E91BA42970475200A93AA8 /* API */,
 				87E91BA22970454700A93AA8 /* Utilities */,
-				87E91B8E2970450000A93AA8 /* AppDelegate.swift */,
-				87E91B902970450000A93AA8 /* SceneDelegate.swift */,
-				87E91B942970450000A93AA8 /* Main.storyboard */,
-				87E91B972970450200A93AA8 /* Assets.xcassets */,
-				87E91B992970450200A93AA8 /* LaunchScreen.storyboard */,
-				872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */,
-				87E91B9C2970450200A93AA8 /* Info.plist */,
+				8793CBB229A6202B00C8A268 /* Resources */,
+				8793CBB329A6204700C8A268 /* App */,
+				8793CBB429A6217300C8A268 /* Storyboards */,
 			);
 			path = TwitterTutorial;
 			sourceTree = "<group>";
@@ -251,7 +278,7 @@
 				872491482975AB6700528B8A /* Autentication */,
 				87E91BA92970487600A93AA8 /* MainTabController.swift */,
 				87E91BAD297050E000A93AA8 /* FeedController.swift */,
-				87E91BAF2970511B00A93AA8 /* ExploreController.swift */,
+				87E91BAF2970511B00A93AA8 /* SearchController.swift */,
 				87E91BB32970513800A93AA8 /* NotificationsController.swift */,
 				87E91BB52970516100A93AA8 /* ConversationsController.swift */,
 				87F639F2297FDE70009F2376 /* UploadTweetController.swift */,
@@ -418,7 +445,7 @@
 				87EB713E29942304003E4176 /* ActionSheetCell.swift in Sources */,
 				877911312976BEA300D0C687 /* Utilities.swift in Sources */,
 				87631A50299BB8B200BDB1D9 /* NotificationViewModel.swift in Sources */,
-				87E91BB02970511B00A93AA8 /* ExploreController.swift in Sources */,
+				87E91BB02970511B00A93AA8 /* SearchController.swift in Sources */,
 				87AE478429759AAB0035ACF9 /* Extensions.swift in Sources */,
 				8778ECCC299146630091237C /* TweetController.swift in Sources */,
 				878EA89029880F1700F63AC6 /* ProfileController.swift in Sources */,
@@ -441,6 +468,7 @@
 				87CA6C0C29965EEA00270E15 /* ActionSheetViewModel.swift in Sources */,
 				87631A4E299BABBC00BDB1D9 /* NotificationCell.swift in Sources */,
 				87085253299FAC2500F05D94 /* EditProfileViewModel.swift in Sources */,
+				8723581A29A3AD2400849220 /* EditProfileFooter.swift in Sources */,
 				8724914C2975AC5800528B8A /* RegistrationController.swift in Sources */,
 				87E91BAE297050E000A93AA8 /* FeedController.swift in Sources */,
 				873EBE01297B02F800B1DABF /* Constants.swift in Sources */,
@@ -598,14 +626,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5QF774VV5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TwitterTutorial/Info.plist;
+				INFOPLIST_FILE = TwitterTutorial/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -629,14 +656,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5QF774VV5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TwitterTutorial/Info.plist;
+				INFOPLIST_FILE = TwitterTutorial/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

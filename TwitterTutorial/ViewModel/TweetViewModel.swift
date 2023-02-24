@@ -8,9 +8,7 @@
 import UIKit
 
 struct TweetViewModel {
-    
     //MARK: -Properties
-    
     let tweet: Tweet
     let user: User
     
@@ -18,7 +16,7 @@ struct TweetViewModel {
         tweet.user.profileImageUrl
     }
     
-    var timestamp: String {
+    private var timestamp: String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
         formatter.maximumUnitCount = 1
@@ -85,13 +83,12 @@ struct TweetViewModel {
         self.user = tweet.user
     }
     
-    fileprivate func attributedText(withValue value: Int, text: String) -> NSAttributedString {
+    private func attributedText(withValue value: Int, text: String) -> NSAttributedString {
         let attributedTitle = NSMutableAttributedString(string: "\(value)",
                                                         attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedTitle.append(NSAttributedString(string: text,
                                                   attributes: [.font: UIFont.boldSystemFont(ofSize: 14),
-                                                               .foregroundColor: UIColor.lightGray]
-                                                 ))
+                                                               .foregroundColor: UIColor.lightGray]))
         
         return attributedTitle
     }

@@ -8,7 +8,6 @@
 import UIKit
 
 class RegistrationController: UIViewController {
-   
     //MARK: -Properties
     private let imagePicker = UIImagePickerController()
     private var profileImage: UIImage?
@@ -18,52 +17,63 @@ class RegistrationController: UIViewController {
         let image = UIImage(named: "plus_photo")
         button.setImage(image, for: .normal)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(handleAddProfilePhoto), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleAddProfilePhoto),
+                         for: .touchUpInside)
+        
         return button
     }()
     
     private lazy var emailContainerView: UIView = {
         let image = UIImage(named: "ic_mail_outline_white_2x-1")
-        let view = Utilities().inputContainerView(with: image ?? UIImage(), textField: emailTextField)
+        let view = Utilities().inputContainerView(with: image ?? UIImage(),
+                                                  textField: emailTextField)
         return view
     }()
     
     private lazy var passwordContainerView: UIView = {
         let image = UIImage(named: "ic_lock_outline_white_2x")
-        let view = Utilities().inputContainerView(with: image ?? UIImage(), textField: passwordTextField)
+        let view = Utilities().inputContainerView(with: image ?? UIImage(),
+                                                  textField: passwordTextField)
         return view
     }()
     
     private lazy var fullNameContainerView: UIView = {
         let image = UIImage(named: "ic_person_outline_white_2x")
-        let view = Utilities().inputContainerView(with: image ?? UIImage(), textField: fullNameTextField)
+        let view = Utilities().inputContainerView(with: image ?? UIImage(),
+                                                  textField: fullNameTextField)
         return view
     }()
    
     private lazy var userNameContainerView: UIView = {
         let image = UIImage(named: "ic_person_outline_white_2x")
-        let view = Utilities().inputContainerView(with: image ?? UIImage(), textField: userNameTextField)
+        let view = Utilities().inputContainerView(with: image ?? UIImage(),
+                                                  textField: userNameTextField)
         return view
     }()
 
     private let emailTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Email")
+        
         return tf
     }()
     
     private let passwordTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Password")
         tf.isSecureTextEntry = true
+        
         return tf
     }()
     
     private let fullNameTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Full Name")
+        
         return tf
     }()
     
     private let userNameTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "User Name")
+        
         return tf
     }()
     
@@ -75,7 +85,9 @@ class RegistrationController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleRegistration),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -83,12 +95,14 @@ class RegistrationController: UIViewController {
     
     private lazy var alreadyHaveAccountButton: UIButton = {
         let button = Utilities().createAttributeButton("Already have an account? ", "Log In")
-        button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleShowLogin),
+                         for: .touchUpInside)
        
         return button
     }()
     
-    
+
     //MARK: -Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,12 +119,12 @@ class RegistrationController: UIViewController {
             print("Debug: Please select a profile image")
             return
         }
+        
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
         guard let userName = userNameTextField.text?.lowercased() else { return }
         
-
         let authCredential = AuthCredentials(email: email,
                                              password: password,
                                              fullName: fullName,
@@ -126,13 +140,12 @@ class RegistrationController: UIViewController {
         }
     }
     
-
     @objc func handleAddProfilePhoto() {
         present(imagePicker, animated: true)
     }
     
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .twitterBlue
         
         imagePicker.delegate = self

@@ -34,7 +34,9 @@ class EditProfileHeader: UIView {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
         
-        button.addTarget(self, action: #selector(handleChangeProfilePhoto), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleChangeProfilePhoto),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -64,10 +66,7 @@ class EditProfileHeader: UIView {
     }
     
     //MARK: -Selectors
-    
     @objc func handleChangeProfilePhoto() {
         delegate?.didTapChangeProfilePhoto()
     }
-    
-    //MARK: -Helpers
 }

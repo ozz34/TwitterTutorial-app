@@ -10,10 +10,12 @@ import Firebase
 typealias DatabaseCompletion = (Error?, DatabaseReference)-> Void
 
 class UserService {
+    //MARK: -Properties, Lyfecycle
     static let shared = UserService()
     
     private init() {}
     
+    //MARK: -Helpers
     func fetchUser(uid: String, completion: @escaping(User)-> Void) {
 
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in

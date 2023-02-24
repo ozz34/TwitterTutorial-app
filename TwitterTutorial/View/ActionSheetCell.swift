@@ -8,9 +8,7 @@
 import UIKit
 
 class ActionSheetCell: UITableViewCell {
-    
     //MARK: -Properties
-    
     var option: ActionSheetOptions? {
         didSet {
             configure()
@@ -52,7 +50,7 @@ class ActionSheetCell: UITableViewCell {
     }
     
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         titleLabel.text = option?.description
     }
 }

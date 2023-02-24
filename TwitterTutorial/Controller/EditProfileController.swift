@@ -9,6 +9,7 @@ import UIKit
 
 protocol EditProfileControllerDelegate: AnyObject {
     func controller(_ controller: EditProfileController, wantsToUpdate user: User)
+    func handleLogout()
 }
 
 class EditProfileController: UITableViewController {
@@ -20,6 +21,7 @@ class EditProfileController: UITableViewController {
     private lazy var headerView = EditProfileHeader(user: user)
     private let identifier = "EditProfileCell"
     private let imagePicker = UIImagePickerController()
+    private let footerView = EditProfileFooter()
    
     private var selectedImage: UIImage? {
         didSet {
@@ -54,19 +56,9 @@ class EditProfileController: UITableViewController {
         configureTableView()
         configureImagePicker()
     }
-
-    //MARK: -Selectors
-    
-    @objc func handleCancel() {
-        dismiss(animated: true)
-    }
-    @objc func handleDone() {
-       view.endEditing(true)
-       updateUserData()
-    }
     
     //MARK: -API
-    func updateUserData() {
+    private func updateUserData() {
         if imageChanged && !userInfoChanged {
             updateProfileImage()
         }
@@ -84,16 +76,27 @@ class EditProfileController: UITableViewController {
         }
     }
     
-    func updateProfileImage() {
+    private func updateProfileImage() {
         guard let image = selectedImage else { return }
+        
         UserService.shared.updateProfileImage(image: image) { profileImageURL in
             self.user.profileImageUrl = profileImageURL
             self.delegate?.controller(self, wantsToUpdate: self.user)
         }
     }
+
+    //MARK: -Selectors
+    @objc func handleCancel() {
+        dismiss(animated: true)
+    }
+    
+    @objc func handleDone() {
+       view.endEditing(true)
+       updateUserData()
+    }
     
     //MARK: -Helpers
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
 
         navigationController?.navigationBar.barTintColor = .twitterBlue
         navigationController?.navigationBar.barStyle = .black
@@ -107,16 +110,19 @@ class EditProfileController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
-        tableView.tableFooterView = UIView()
         headerView.delegate = self
+        
+        footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
+        tableView.tableFooterView = footerView
+        footerView.delegate = self
         
         tableView.register(EditProfileCell.self, forCellReuseIdentifier: identifier)
     }
     
-    func configureImagePicker() {
+    private func configureImagePicker() {
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
     }
@@ -139,6 +145,7 @@ extension EditProfileController {
         return cell
     }
 }
+
 //MARK: - UITableViewDelegate
 extension EditProfileController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -151,6 +158,21 @@ extension EditProfileController {
 extension EditProfileController: EditProfileHeaderDelegate {
     func didTapChangeProfilePhoto() {
         present(imagePicker,animated: true)
+    }
+}
+
+//MARK: - EditProfileFooterDelegate
+extension EditProfileController: EditProfileFooterDelegate {
+    func handleLogout() {
+        let alert = UIAlertController(title: nil, message: "Are you sure you want to log out?", preferredStyle: .actionSheet)
+        let logOutAction = UIAlertAction(title: "Log out", style: .destructive) { _ in
+            self.dismiss(animated: true)
+            self.delegate?.handleLogout()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(logOutAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
 }
 
@@ -176,8 +198,8 @@ extension EditProfileController: EditProfileCellDelegate {
 //MARK: - UIImagePickerControllerDelegate
 extension EditProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         guard let image = info[.editedImage] as? UIImage else { return }
+        
         self.selectedImage = image
         imageChanged = true
         

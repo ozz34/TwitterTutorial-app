@@ -5,11 +5,9 @@
 //  Created by Иван Худяков on 12.01.2023.
 //
 
-
 import UIKit
 
 class NotificationsController: UITableViewController {
-  
     //MARK: -Properties
     private let identifier = "NotificationCell"
     private var notifications = [Notification]() {
@@ -32,13 +30,9 @@ class NotificationsController: UITableViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barStyle = .default
     }
-    //MARK: -Selectors
-    @objc func handleRefresh() {
-        fetchNotifications()
-    }
     
     //MARK: -API
-    func fetchNotifications() {
+    private func fetchNotifications() {
         refreshControl?.beginRefreshing()
         
         NotificationService.shared.fetchNotifications { notifications in
@@ -49,19 +43,27 @@ class NotificationsController: UITableViewController {
     }
     
     func checkIfUserIsFollowed(notifications: [Notification]) {
-        for (index, notification) in notifications.enumerated() {
-            if case .follow = notification.type {
-                let user = notification.user
-                
-                UserService.shared.checkUserIsFollowed(uid: user.uid) { isFollowed in
+        guard !notifications.isEmpty else { return }
+        
+        notifications.forEach { notification in
+            guard case .follow = notification.type else { return }
+            let user = notification.user
+            
+            UserService.shared.checkUserIsFollowed(uid: user.uid) { isFollowed in
+                if let index = self.notifications.firstIndex(where: { $0.user.uid == notification.user.uid }) {
                     self.notifications[index].user.isFollowed = isFollowed
                 }
             }
         }
     }
     
+    //MARK: -Selectors
+    @objc func handleRefresh() {
+        fetchNotifications()
+    }
+    
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = "Notifications"
         
@@ -71,7 +73,9 @@ class NotificationsController: UITableViewController {
         
         let refreshControl = UIRefreshControl()
         tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.addTarget(self,
+                                 action: #selector(handleRefresh),
+                                 for: .valueChanged)
     }
 }
 
@@ -113,10 +117,14 @@ extension NotificationsController: NotificationCellDelegate {
         if user.isFollowed {
             UserService.shared.unfollowUser(uid: user.uid) { err, ref in
                 cell.notification?.user.isFollowed = false
+                
+                NotificationService.shared.uploadNotification(toUser: user, type: .unfollow)
             }
         } else {
             UserService.shared.followUser(uid: user.uid) { err, ref in
                 cell.notification?.user.isFollowed = true
+                
+                NotificationService.shared.uploadNotification(toUser: user, type: .follow)
             }
         }
     }

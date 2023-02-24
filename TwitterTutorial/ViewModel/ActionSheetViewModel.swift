@@ -28,7 +28,7 @@ enum ActionSheetOptions {
 }
 
 struct ActionSheetViewModel {
-    
+    //MARK: -Properties
     private let user: User
     
     var options: [ActionSheetOptions] {
@@ -37,13 +37,15 @@ struct ActionSheetViewModel {
         if user.isCurrentUser {
             results.append(.delete)
         } else {
-            let followOption: ActionSheetOptions = user.isFollowed ? .unfollow(user) : .follow(user)
+            let followOption: ActionSheetOptions = user.isFollowed ? .unfollow(user) :
+                                                                     .follow(user)
             results.append(followOption)
         }
         results.append(.report)
         return results
     }
 
+    //MARK: -Lyfecycle
     init(user: User) {
         self.user = user
     }
