@@ -15,7 +15,6 @@ protocol ProfileHeaderDelegate: AnyObject {
 
 class ProfileHeader: UICollectionReusableView {
     //MARK: -Properties
-    
     var user: User? {
         didSet {
             configure()
@@ -42,8 +41,11 @@ class ProfileHeader: UICollectionReusableView {
 
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "baseline_arrow_back_white_24dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
+        button.setImage(UIImage(named: "baseline_arrow_back_white_24dp")?.withRenderingMode(.alwaysOriginal),
+                                for: .normal)
+        button.addTarget(self,
+                         action: #selector(handleDismissal),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -70,7 +72,9 @@ class ProfileHeader: UICollectionReusableView {
         button.layer.borderColor = UIColor.twitterBlue.cgColor
         button.layer.borderWidth = 1.25
         
-        button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleEditProfileFollow),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -82,14 +86,14 @@ class ProfileHeader: UICollectionReusableView {
         return label
     }()
     
-    let fullNameLabel: UILabel = {
+    private let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         
         return label
     }()
     
-    let userNameLabel: UILabel = {
+    private let userNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
@@ -99,7 +103,8 @@ class ProfileHeader: UICollectionReusableView {
     
     private lazy var followingLabel: UILabel = {
         let label = UILabel()
-        let followTap = UIGestureRecognizer(target: self, action: #selector(handleFollowersTapped))
+        let followTap = UIGestureRecognizer(target: self,
+                                            action: #selector(handleFollowersTapped))
         label.addGestureRecognizer(followTap)
         label.isUserInteractionEnabled = true
         
@@ -108,13 +113,13 @@ class ProfileHeader: UICollectionReusableView {
  
     private lazy var followersLabel: UILabel = {
         let label = UILabel()
-        let followTap = UIGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
+        let followTap = UIGestureRecognizer(target: self,
+                                            action: #selector(handleFollowingTapped))
         label.addGestureRecognizer(followTap)
         label.isUserInteractionEnabled = true
         
         return label
     }()
-    
     
     //MARK: -Lyfecycle
     override init(frame: CGRect) {
@@ -142,7 +147,9 @@ class ProfileHeader: UICollectionReusableView {
                                        paddingRight: 16)
         editProfileFollowButton.setDimensions(width: 100, height: 36)
         
-        let userDetailStack = UIStackView(arrangedSubviews: [fullNameLabel, userNameLabel, bioLabel])
+        let userDetailStack = UIStackView(arrangedSubviews: [fullNameLabel,
+                                                             userNameLabel,
+                                                             bioLabel])
         userDetailStack.axis = .vertical
         userDetailStack.distribution = .fillProportionally
         userDetailStack.spacing = 4
@@ -161,7 +168,8 @@ class ProfileHeader: UICollectionReusableView {
                          right:  rightAnchor,
                          height:  50)
         
-        let followStack = UIStackView(arrangedSubviews: [followingLabel, followersLabel])
+        let followStack = UIStackView(arrangedSubviews: [followingLabel,
+                                                         followersLabel])
         followStack.axis = .horizontal
         followStack.distribution = .fillEqually
         followStack.spacing = 8
@@ -188,20 +196,20 @@ class ProfileHeader: UICollectionReusableView {
         delegate?.handleEditProfileFollow()
     }
     
+    //TODO: create followers tap action
     @objc func handleFollowersTapped() {
         
     }
-    
+    //TODO: create following tap action
     @objc func handleFollowingTapped() {
         
     }
     
-    
-   
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         guard let user else { return }
         let viewModel = ProfileHeaderViewModel(user: user)
+        
         profileImageView.sd_setImage(with: user.profileImageUrl)
         editProfileFollowButton.setTitle(viewModel.actionButtonTitle, for: .normal)
         

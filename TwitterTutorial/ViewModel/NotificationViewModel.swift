@@ -8,19 +8,10 @@
 import UIKit
 
 struct NotificationViewModel {
+    //MARK: -Properties
     private let notification: Notification
     private let type: NotificationType
     private let user: User
-    
-    var timestampString: String? {
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
-            formatter.maximumUnitCount = 1
-            formatter.unitsStyle = .abbreviated
-            let now = Date()
-            
-            return formatter.string(from: notification.timestamp, to: now) ?? "2m"
-    }
     
     var notificationMessage: String {
         switch type {
@@ -29,6 +20,7 @@ struct NotificationViewModel {
         case .reply: return " replied to your tweet"
         case .retweet: return " retweeted your tweet"
         case .mention: return " mentioned you in tweet"
+        case .unfollow: return " unfollowed you"
         }
     }
     
@@ -56,8 +48,18 @@ struct NotificationViewModel {
     var followButtonText: String {
         return user.isFollowed ? "Following" : "Follow"
     }
-
     
+    private var timestampString: String? {
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+            formatter.maximumUnitCount = 1
+            formatter.unitsStyle = .abbreviated
+            let now = Date()
+            
+            return formatter.string(from: notification.timestamp, to: now) ?? "2m"
+    }
+
+    //MARK: -Lyfecycle
     init(notification: Notification) {
         self.notification = notification
         self.type = notification.type

@@ -8,11 +8,12 @@
 import Firebase
 
 class NotificationService {
-    
+    //MARK: -Properties, Lyfecycle
     static let shared = NotificationService()
     
     private init() {}
     
+    //MARK: -Helpers
     func uploadNotification(toUser user: User,
                             type: NotificationType,
                             tweetID: String? = nil) {

@@ -14,7 +14,6 @@ enum SearchControllerConfiguration {
 }
 
 class SearchController: UITableViewController {
-    
     //MARK: -Properties
     
     private let config: SearchControllerConfiguration
@@ -50,6 +49,7 @@ class SearchController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureUI()
         fetchUsers()
         configureSearchController()
@@ -57,13 +57,14 @@ class SearchController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barStyle = .default
         searchController.searchBar.text = ""
     }
     
     //MARK: -API
-    func fetchUsers() {
+    private func fetchUsers() {
         UserService.shared.fetchUsers { users in
             self.users = users
         }
@@ -75,7 +76,7 @@ class SearchController: UITableViewController {
     }
     
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = config == .messages ? "New message" : "Explore"
         tableView.register(UserCell.self, forCellReuseIdentifier: identifier)
@@ -87,7 +88,7 @@ class SearchController: UITableViewController {
         }
     }
     
-    func configureSearchController() {
+    private func configureSearchController() {
         searchController.searchResultsUpdater = self
 
         searchController.obscuresBackgroundDuringPresentation = false
@@ -115,7 +116,6 @@ extension SearchController {
         return cell
     }
     
-    
     //MARK: -UITableViewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
@@ -124,6 +124,7 @@ extension SearchController {
     }
 }
 
+//MARK: -UISearchResultsUpdating
 extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }

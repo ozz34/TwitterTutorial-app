@@ -10,9 +10,7 @@ import SDWebImage
 import ActiveLabel
 
 class UploadTweetController: UIViewController {
-    
     //MARK: -Properties
-    
     private let user: User
     private let config: UploadTweetConfiguration
     private lazy var viewModel = UploadTweetViewModel(config: config)
@@ -27,7 +25,9 @@ class UploadTweetController: UIViewController {
         button.frame = CGRect(x: 0, y: 0, width: 64, height: 32)
         button.layer.cornerRadius = 32 / 2
         
-        button.addTarget(self, action: #selector(handleUploadTweet), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleUploadTweet),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -55,7 +55,6 @@ class UploadTweetController: UIViewController {
     }()
     
     //MARK: -Lyfecycle
-    
     init(user: User, config: UploadTweetConfiguration) {
         self.user = user
         self.config = config
@@ -71,6 +70,13 @@ class UploadTweetController: UIViewController {
         
         configureUI()
         configureMentionHandler()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
     }
     
     //MARK: -Selectors
@@ -94,13 +100,9 @@ class UploadTweetController: UIViewController {
             self.dismiss(animated: true)
         }
     }
-    
-    //MARK: -API
-    
-    
-    
+
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         configureNavigationBar()
         
@@ -126,21 +128,24 @@ class UploadTweetController: UIViewController {
         actionButton.setTitle(viewModel.actionButtonTitle, for: .normal)
         captionTextView.placeholderLabel.text = viewModel.placeholderText
         replyLabel.isHidden = !viewModel.shouldShowReplyLabel
+        
         guard let replyText = viewModel.replyText else { return }
         replyLabel.text = replyText
     }
     
-
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         navigationController?.navigationBar.barTintColor = .white
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                           target: self,
+                                                           action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
     
     func configureMentionHandler() {
         replyLabel.handleMentionTap { mention in
-            print("123")
+            let controller = ProfileController(user: self.user)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

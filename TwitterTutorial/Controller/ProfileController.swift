@@ -36,9 +36,7 @@ class ProfileController: UICollectionViewController {
         }
     }
         
-    
     //MARK: -Lyfecycle
-    
     init(user: User) {
         self.user = user
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -50,6 +48,7 @@ class ProfileController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         configureCollectionView()
         fetchTweets()
         fetchLikedTweets()
@@ -66,33 +65,33 @@ class ProfileController: UICollectionViewController {
     }
     
     //MARK: -API
-    func fetchTweets() {
+   private func fetchTweets() {
         TweetService.shared.fetchTweets(forUser: user) { tweets in
             self.tweets = tweets
             self.collectionView.reloadData()
         }
     }
     
-    func fetchLikedTweets() {
+    private func fetchLikedTweets() {
         TweetService.shared.fetchLikes(forUser: user) { likedTweets in
             self.likedTweets = likedTweets
         }
     }
     
-    func fetchReplies() {
+    private func fetchReplies() {
         TweetService.shared.fetchReplies(forUser: user) { replies in
             self.replies = replies
         }
     }
     
-    func checkIfUserIsFollowed() {
+    private func checkIfUserIsFollowed() {
         UserService.shared.checkUserIsFollowed(uid: user.uid) { isFollowed  in
             self.user.isFollowed = isFollowed
             self.collectionView.reloadData()
         }
     }
     
-    func fetchUserStats() {
+    private func fetchUserStats() {
         UserService.shared.fetchUserStats(uid: user.uid) { stats in
             self.user.stats = stats
             self.collectionView.reloadData()
@@ -100,8 +99,7 @@ class ProfileController: UICollectionViewController {
     }
     
     //MARK: -Helpers
-    
-    func configureCollectionView() {
+    private func configureCollectionView() {
         collectionView.contentInsetAdjustmentBehavior = .never
         
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
@@ -115,7 +113,6 @@ class ProfileController: UICollectionViewController {
 
 // MARK: -UICollectionViewDataSource
 extension ProfileController {
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         currentDataSource.count
     }
@@ -125,6 +122,7 @@ extension ProfileController {
         
         let tweet = currentDataSource[indexPath.row]
         cell.tweet = tweet
+        cell.mentionDelegate = self
         
         return cell
     }
@@ -193,6 +191,8 @@ extension ProfileController: ProfileHeaderDelegate {
                 self.user.isFollowed = false
                 self.user.stats?.followers -= 1
                 self.collectionView.reloadData()
+                
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .unfollow)
             }
         } else {
             UserService.shared.followUser(uid: user.uid) { ref, err in
@@ -227,5 +227,14 @@ extension ProfileController: EditProfileControllerDelegate {
         controller.dismiss(animated: true)
         self.user = user
         self.collectionView.reloadData()
+    }
+}
+
+extension ProfileController: TweetCellMentionDelegate {
+    func handleFetchUserFromTweetController(withUserName userName: String) {
+        UserService.shared.fetchUser(withUsername: userName) { user in
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }

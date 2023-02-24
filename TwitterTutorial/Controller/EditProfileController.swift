@@ -56,19 +56,9 @@ class EditProfileController: UITableViewController {
         configureTableView()
         configureImagePicker()
     }
-
-    //MARK: -Selectors
-    
-    @objc func handleCancel() {
-        dismiss(animated: true)
-    }
-    @objc func handleDone() {
-       view.endEditing(true)
-       updateUserData()
-    }
     
     //MARK: -API
-    func updateUserData() {
+    private func updateUserData() {
         if imageChanged && !userInfoChanged {
             updateProfileImage()
         }
@@ -86,16 +76,27 @@ class EditProfileController: UITableViewController {
         }
     }
     
-    func updateProfileImage() {
+    private func updateProfileImage() {
         guard let image = selectedImage else { return }
+        
         UserService.shared.updateProfileImage(image: image) { profileImageURL in
             self.user.profileImageUrl = profileImageURL
             self.delegate?.controller(self, wantsToUpdate: self.user)
         }
     }
+
+    //MARK: -Selectors
+    @objc func handleCancel() {
+        dismiss(animated: true)
+    }
+    
+    @objc func handleDone() {
+       view.endEditing(true)
+       updateUserData()
+    }
     
     //MARK: -Helpers
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
 
         navigationController?.navigationBar.barTintColor = .twitterBlue
         navigationController?.navigationBar.barStyle = .black
@@ -109,7 +110,7 @@ class EditProfileController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
         headerView.delegate = self
@@ -121,7 +122,7 @@ class EditProfileController: UITableViewController {
         tableView.register(EditProfileCell.self, forCellReuseIdentifier: identifier)
     }
     
-    func configureImagePicker() {
+    private func configureImagePicker() {
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
     }
@@ -144,6 +145,7 @@ extension EditProfileController {
         return cell
     }
 }
+
 //MARK: - UITableViewDelegate
 extension EditProfileController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -196,8 +198,8 @@ extension EditProfileController: EditProfileCellDelegate {
 //MARK: - UIImagePickerControllerDelegate
 extension EditProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         guard let image = info[.editedImage] as? UIImage else { return }
+        
         self.selectedImage = image
         imageChanged = true
         

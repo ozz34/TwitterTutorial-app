@@ -25,7 +25,8 @@ class ActionSheetLauncher: NSObject {
         let view = UIView()
         view.alpha = 0
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleDismissal))
         view.addGestureRecognizer(tap)
         
         return view
@@ -73,7 +74,7 @@ class ActionSheetLauncher: NSObject {
     }
     
     //MARK: -Helpers
-    func showTableView(_ shouldShow: Bool) {
+    private func showTableView(_ shouldShow: Bool) {
         guard let window else { return }
         guard let height = tableViewHeight else { return }
         let y = shouldShow ? window.frame.height - height : window.frame.height
@@ -102,7 +103,7 @@ class ActionSheetLauncher: NSObject {
         }
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self

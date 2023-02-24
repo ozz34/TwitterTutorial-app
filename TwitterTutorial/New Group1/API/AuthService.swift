@@ -16,10 +16,12 @@ struct AuthCredentials {
 }
 
 class AuthService {
+    //MARK: -Properties, Lyfecycle
     static let shared = AuthService()
     
     private init() {}
     
+    //MARK: -Helpers
     func logUserIn(withEmail email: String, password: String, completion: @escaping ((AuthDataResult?, Error?)-> Void)) {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }

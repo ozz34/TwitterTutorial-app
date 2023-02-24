@@ -6,10 +6,8 @@
 //
 
 import UIKit
-import SDWebImage
 
 class FeedController: UICollectionViewController {
-    
     //MARK: -Properties
     var user: User? {
         didSet {
@@ -28,27 +26,16 @@ class FeedController: UICollectionViewController {
     //MARK: -Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureUI()
         fetchTweets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
-    }
-    
-    //MARK: -Selectors
-    @objc func handleRefresh() {
-        fetchTweets()
-    }
-    
-    @objc func handleProfileImageTap() {
-        guard let user else { return }
-        let controller = ProfileController(user: user)
-        navigationController?.pushViewController(controller, animated: true)
     }
     
     //MARK: -API
@@ -62,7 +49,7 @@ class FeedController: UICollectionViewController {
         }
     }
     
-    func checkIfUserLikedTweets() {
+    private func checkIfUserLikedTweets() {
         self.tweets.forEach { tweet in
             TweetService.shared.checkIsUserLikedTweet(tweet: tweet) { didLike in
                 guard didLike == true else { return }
@@ -74,9 +61,19 @@ class FeedController: UICollectionViewController {
         }
     }
     
+    //MARK: -Selectors
+    @objc func handleRefresh() {
+        fetchTweets()
+    }
+    
+    @objc func handleProfileImageTap() {
+        guard let user else { return }
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     //MARK: -Helpers
-    func configureUI() {
-        view.backgroundColor = .white
+    private func configureUI() {
         
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
         
@@ -87,10 +84,12 @@ class FeedController: UICollectionViewController {
         
         let refreshControl = UIRefreshControl()
         collectionView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.addTarget(self,
+                                 action: #selector(handleRefresh),
+                                 for: .valueChanged)
     }
     
-    func configureLeftBarButton() {
+    private func configureLeftBarButton() {
         guard let user else { return }
         
         let profileImageView = UIImageView()
@@ -99,14 +98,16 @@ class FeedController: UICollectionViewController {
         profileImageView.layer.masksToBounds = true
         profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTap))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleProfileImageTap))
         profileImageView.addGestureRecognizer(tap)
         profileImageView.isUserInteractionEnabled = true
     
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
     }
 }
-//MARK: -UICollectionViewDelegate/DataSource
+
+//MARK: -UICollectionViewDataSource
 extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         tweets.count
@@ -121,13 +122,15 @@ extension FeedController {
         
         return cell
     }
-    
+
+//MARK: -UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let controller = TweetController(tweet: tweets[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
 }
+
 //MARK: -UICollectionViewDelegateFlowLayout
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -138,16 +141,8 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
 // MARK: -TweetCellDelegate
 extension FeedController: TweetCellDelegate {
-    func handleFetchUser(withUserName userName: String) {
-        UserService.shared.fetchUser(withUsername: userName) { user in
-           let controller = ProfileController(user: user)
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-    
     func handleLikeTapped(_ cell: TweetCell) {
         guard let tweet = cell.tweet else { return }
         
@@ -157,7 +152,6 @@ extension FeedController: TweetCellDelegate {
             let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
             cell.tweet?.likes = likes
             
-            //only upload notification if tweet is being liked
             guard !tweet.didLike else { return }
             NotificationService.shared.uploadNotification(toUser: tweet.user,
                                                           type: .like,
@@ -177,6 +171,13 @@ extension FeedController: TweetCellDelegate {
         guard let user = cell.tweet?.user else { return }
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func handleFetchUserFromFeedController(withUserName userName: String) {
+        UserService.shared.fetchUser(withUsername: userName) { user in
+           let controller = ProfileController(user: user)
+           self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
    

@@ -13,7 +13,6 @@ protocol NotificationCellDelegate: AnyObject {
 }
 
 class NotificationCell: UITableViewCell {
-    
     //MARK: -Properties
     var notification: Notification? {
         didSet {
@@ -31,7 +30,8 @@ class NotificationCell: UITableViewCell {
         iv.layer.cornerRadius = 40 / 2
         iv.backgroundColor = .twitterBlue
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
         
@@ -45,17 +45,18 @@ class NotificationCell: UITableViewCell {
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.twitterBlue.cgColor
         button.layer.borderWidth = 4
-        button.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleFollowTapped),
+                         for: .touchUpInside)
         
         return button
     }()
     
-    let notificationLabel: UILabel = {
+    private let notificationLabel: UILabel = {
        let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "Some text"
-        
+
         return label
     }()
 
@@ -96,7 +97,7 @@ class NotificationCell: UITableViewCell {
     }
     
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         guard let notification else { return }
         let viewModel = NotificationViewModel(notification: notification)
         

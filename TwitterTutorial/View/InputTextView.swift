@@ -8,7 +8,6 @@
 import UIKit
 
 class InputTextView: UITextView {
-    
     //MARK: -Properties
     let placeholderLabel: UILabel = {
         let label = UILabel()
@@ -17,6 +16,7 @@ class InputTextView: UITextView {
         
         return label
     }()
+    
     //MARK: -lifeCycle
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -40,6 +40,7 @@ class InputTextView: UITextView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: -Selectors
     @objc func handleTextInputChange() {
         placeholderLabel.isHidden = !text.isEmpty

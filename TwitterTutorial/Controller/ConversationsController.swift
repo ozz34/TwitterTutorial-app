@@ -5,13 +5,10 @@
 //  Created by Иван Худяков on 12.01.2023.
 //
 
-
 import UIKit
 
+//TODO: configure controller
 class ConversationsController: UIViewController {
-   
-    //MARK: -Properties
-    
     //MARK: -Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +17,7 @@ class ConversationsController: UIViewController {
     }
    
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = "Messages"
     }

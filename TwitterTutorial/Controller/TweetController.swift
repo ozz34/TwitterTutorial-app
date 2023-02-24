@@ -8,7 +8,6 @@
 import UIKit
 
 class TweetController: UICollectionViewController {
-    
     //MARK: -Properties
     private let tweet: Tweet
     private var replies = [Tweet]() {
@@ -23,8 +22,8 @@ class TweetController: UICollectionViewController {
     private let headerIdentifier = "TweetHeader"
     
     //MARK: -Lyfecycle
-    
     init(tweet: Tweet) {
+        
         self.tweet = tweet
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -48,21 +47,21 @@ class TweetController: UICollectionViewController {
     }
     
     //MARK: -API
-    func fetchReplies() {
+    private func fetchReplies() {
         TweetService.shared.fetchReplies(forTweet: tweet) { replies in
             self.replies = replies
         }
     }
   
     //MARK: -Helpers
-    func configureCollectionView() {
+    private func configureCollectionView() {
        collectionView.backgroundColor = .white
    
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
         collectionView.register(TweetHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
     }
     
-    fileprivate func showActionSheet(forUser user: User) {
+    private func showActionSheet(forUser user: User) {
         actionSheetLauncher = ActionSheetLauncher(user: user)
         actionSheetLauncher.delegate = self
         actionSheetLauncher.show()
@@ -92,8 +91,18 @@ extension TweetController {
        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
         
         cell.tweet = replies[indexPath.row]
+        cell.mentionDelegate = self
         
         return cell
+    }
+}
+
+extension TweetController: TweetCellMentionDelegate {
+    func handleFetchUserFromTweetController(withUserName userName: String) {
+        UserService.shared.fetchUser(withUsername: userName) { user in
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
@@ -108,14 +117,19 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            CGSize(width: view.frame.width, height: 120)
+            
+            let reply = replies[indexPath.row]
+            let viewModel = TweetViewModel(tweet: reply)
+            let captionHeight = viewModel.size(forWidth: view.frame.width).height
+            
+            return CGSize(width: view.frame.width, height: captionHeight + 85)
         }
 }
 //MARK: - TweetHeaderDelegate
 extension TweetController: TweetHeaderDelegate {
     func handleFetchUser(withUserName userName: String) {
         UserService.shared.fetchUser(withUsername: userName) { user in
-           let controller = ProfileController(user: user)
+            let controller = ProfileController(user: user)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -138,10 +152,13 @@ extension TweetController: ActionSheetLauncherDelegate {
         switch option {
         case .follow(let user):
             UserService.shared.followUser(uid: user.uid) { err, ref in
+                NotificationService.shared.uploadNotification(toUser: user, type: .follow)
             }
         case .unfollow(let user):
             UserService.shared.unfollowUser(uid: user.uid) { err, ref in
+                NotificationService.shared.uploadNotification(toUser: user, type: .unfollow)
             }
+        //TODO: realize functionality
         case .report:
             print("Report")
         case .delete: 

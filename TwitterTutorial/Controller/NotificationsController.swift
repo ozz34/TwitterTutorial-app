@@ -5,11 +5,9 @@
 //  Created by Иван Худяков on 12.01.2023.
 //
 
-
 import UIKit
 
 class NotificationsController: UITableViewController {
-  
     //MARK: -Properties
     private let identifier = "NotificationCell"
     private var notifications = [Notification]() {
@@ -32,13 +30,9 @@ class NotificationsController: UITableViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barStyle = .default
     }
-    //MARK: -Selectors
-    @objc func handleRefresh() {
-        fetchNotifications()
-    }
     
     //MARK: -API
-    func fetchNotifications() {
+    private func fetchNotifications() {
         refreshControl?.beginRefreshing()
         
         NotificationService.shared.fetchNotifications { notifications in
@@ -63,8 +57,13 @@ class NotificationsController: UITableViewController {
         }
     }
     
+    //MARK: -Selectors
+    @objc func handleRefresh() {
+        fetchNotifications()
+    }
+    
     //MARK: -Helpers
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = "Notifications"
         
@@ -74,7 +73,9 @@ class NotificationsController: UITableViewController {
         
         let refreshControl = UIRefreshControl()
         tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.addTarget(self,
+                                 action: #selector(handleRefresh),
+                                 for: .valueChanged)
     }
 }
 
@@ -116,10 +117,14 @@ extension NotificationsController: NotificationCellDelegate {
         if user.isFollowed {
             UserService.shared.unfollowUser(uid: user.uid) { err, ref in
                 cell.notification?.user.isFollowed = false
+                
+                NotificationService.shared.uploadNotification(toUser: user, type: .unfollow)
             }
         } else {
             UserService.shared.followUser(uid: user.uid) { err, ref in
                 cell.notification?.user.isFollowed = true
+                
+                NotificationService.shared.uploadNotification(toUser: user, type: .follow)
             }
         }
     }

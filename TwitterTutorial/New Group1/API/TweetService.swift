@@ -8,10 +8,12 @@
 import Firebase
 
 class TweetService {
-    
+    //MARK: -Properties, Lyfecycle
     static let shared = TweetService()
+    
     private init() {}
     
+    //MARK: -Helpers
     func uploadTweet(caption: String, type: UploadTweetConfiguration,
                      completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -67,6 +69,10 @@ class TweetService {
                 tweets.append(tweet)
                 completion(tweets)
             }
+        }
+        
+        if tweets.isEmpty {
+            completion(tweets)
         }
     }
     
@@ -148,8 +154,6 @@ class TweetService {
         }
     }
     
-    
-    
     func likeTweet(tweet: Tweet, completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -158,12 +162,10 @@ class TweetService {
         REF_TWEETS.child(tweet.tweetId).child("likes").setValue(likes)
         
         if tweet.didLike {
-            //remove like data(unlike)
             REF_USER_LIKES.child(uid).child(tweet.tweetId).removeValue { err, ref in
                 REF_TWEET_LIKES.child(tweet.tweetId).child(uid).removeValue(completionBlock: completion)
             }
         } else {
-            //like tweet
             REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId:1]) { err, ref in
                 REF_TWEET_LIKES.child(tweet.tweetId).updateChildValues([uid: 1], withCompletionBlock: completion)
             }

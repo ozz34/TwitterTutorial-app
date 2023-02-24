@@ -8,16 +8,14 @@
 import UIKit
 
 class UserCell: UITableViewCell {
-   
     //MARK: -Properties
-    
     var user: User? {
         didSet {
             configureCell()
         }
     }
     
-    private lazy var profileImageView: UIImageView = {
+    private let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -43,7 +41,6 @@ class UserCell: UITableViewCell {
     }()
     
     //MARK: -Lyfecycle
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -67,8 +64,9 @@ class UserCell: UITableViewCell {
     }
     
     //MARK: -Helpers
-    func configureCell() {
+    private func configureCell() {
         guard let user else { return }
+        
         userNameLabel.text = user.userName
         fullNameLabel.text = user.fullName
         profileImageView.sd_setImage(with: user.profileImageUrl)

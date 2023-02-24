@@ -33,7 +33,9 @@ class EditProfileCell: UITableViewCell {
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.textAlignment = .left
         tf.textColor = .twitterBlue
-        tf.addTarget(self, action: #selector(handleUpdateUserInfo), for: .editingDidEnd)
+        tf.addTarget(self,
+                     action: #selector(handleUpdateUserInfo),
+                     for: .editingDidEnd)
         
         return tf
     }()
@@ -42,7 +44,6 @@ class EditProfileCell: UITableViewCell {
         let tv = InputTextView()
         tv.font = UIFont.systemFont(ofSize: 14)
         tv.textColor = .twitterBlue
-        tv.placeholderLabel.text = "Bio"
         
         return tv
     }()
@@ -94,8 +95,9 @@ class EditProfileCell: UITableViewCell {
     }
 
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         guard let viewModel else { return }
+        
         bioTextView.isHidden = viewModel.shouldHideTextView
         titleLabel.text = viewModel.titleText
         

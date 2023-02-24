@@ -15,7 +15,6 @@ protocol TweetHeaderDelegate: AnyObject {
 
 class TweetHeader: UICollectionReusableView {
     //MARK: -Properties
-    
     var tweet: Tweet? {
         didSet {
             configure()
@@ -32,7 +31,8 @@ class TweetHeader: UICollectionReusableView {
         iv.layer.cornerRadius = 48 / 2
         iv.backgroundColor = .twitterBlue
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
         
@@ -42,7 +42,6 @@ class TweetHeader: UICollectionReusableView {
     private let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.text = "Peter Parker"
         return label
     }()
     
@@ -50,7 +49,6 @@ class TweetHeader: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "Spiderman"
         
         return label
     }()
@@ -70,7 +68,6 @@ class TweetHeader: UICollectionReusableView {
         label.textColor = .lightGray
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textAlignment = .left
-        label.text = "6: 33 PM -"
         
         return label
     }()
@@ -79,7 +76,9 @@ class TweetHeader: UICollectionReusableView {
         let button = UIButton(type: .system)
         button.tintColor = .lightGray
         button.setImage(UIImage(named: "down_arrow_24pt"), for: .normal)
-        button.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(showActionSheet),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -119,10 +118,10 @@ class TweetHeader: UICollectionReusableView {
         return view
     }()
     
-    private let replyLabel: ActiveLabel = {
+    private lazy var replyLabel: ActiveLabel = {
        let label = ActiveLabel()
         label.textColor = .lightGray
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 26)
         label.mentionColor = .twitterBlue
         
         return label
@@ -133,14 +132,18 @@ class TweetHeader: UICollectionReusableView {
     
     private lazy var commentButton: UIButton = {
       let button = createButton(withImageName: "comment")
-        button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleCommentTapped),
+                         for: .touchUpInside)
         
         return button
     }()
     
     private lazy var retweetButton: UIButton = {
       let button = createButton(withImageName: "retweet")
-        button.addTarget(self, action: #selector(handleRetweetTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleRetweetTapped),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -226,36 +229,34 @@ class TweetHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //TODO - create actions tweet
     //MARK: -Selectors
     @objc func handleProfileImageTapped() {
-
     }
+    
     @objc func showActionSheet() {
         delegate?.showActionSheet()
     }
     
-    
     @objc func handleCommentTapped() {
-
+        print("Comment")
     }
     
     @objc func handleRetweetTapped() {
-
+        print("Retweet")
     }
     
     @objc func handleLikeTapped() {
-
+        print("Like")
     }
     
     @objc func handleShareTapped() {
-
+        print("Share")
     }
     
-    
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         guard let tweet else { return }
-        
         let viewModel = TweetViewModel(tweet: tweet)
         
         captionLabel.text = tweet.caption
@@ -265,13 +266,15 @@ class TweetHeader: UICollectionReusableView {
         dateLabel.text = viewModel.headerTimestamp
         retweetsLabel.attributedText = viewModel.retweetsAttributedString
         likesLabel.attributedText = viewModel.likesAttributedString
+        
         likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         likeButton.tintColor = viewModel.likeButtonTintColor
+        
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
         replyLabel.text = viewModel.replyText
     }
     
-    func createButton(withImageName imageName: String) -> UIButton {
+    private func createButton(withImageName imageName: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName), for: .normal)
         button.tintColor = .darkGray
@@ -280,9 +283,14 @@ class TweetHeader: UICollectionReusableView {
         return button
     }
     
-    func configureMentionHandler() {
+    private func configureMentionHandler() {
         captionLabel.handleMentionTap { username in
+            self.delegate?.handleFetchUser(withUserName: username)
+        }
+        
+        replyLabel.handleMentionTap { username in
             self.delegate?.handleFetchUser(withUserName: username)
         }
     }
 }
+

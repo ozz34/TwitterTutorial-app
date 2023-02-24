@@ -92,7 +92,7 @@
 		8723581929A3AD2400849220 /* EditProfileFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileFooter.swift; sourceTree = "<group>"; };
 		872491492975AB8100528B8A /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		8724914B2975AC5800528B8A /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
-		872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TwitterTutorial/App/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		87355097298C025400163DF5 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		873EBE00297B02F800B1DABF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8740D481297BD751001D7E95 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -197,10 +197,38 @@
 			path = Autentication;
 			sourceTree = "<group>";
 		};
+		8793CBB229A6202B00C8A268 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B972970450200A93AA8 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8793CBB329A6204700C8A268 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B8E2970450000A93AA8 /* AppDelegate.swift */,
+				87E91B902970450000A93AA8 /* SceneDelegate.swift */,
+				87E91B9C2970450200A93AA8 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8793CBB429A6217300C8A268 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				87E91B992970450200A93AA8 /* LaunchScreen.storyboard */,
+				87E91B942970450000A93AA8 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		87E91B822970450000A93AA8 = {
 			isa = PBXGroup;
 			children = (
 				87E91B8D2970450000A93AA8 /* TwitterTutorial */,
+				872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */,
 				874E006A297FA7D900445093 /* TwitterTutorial.app */,
 			);
 			sourceTree = "<group>";
@@ -214,13 +242,9 @@
 				87E91BA52970476100A93AA8 /* Controller */,
 				87E91BA42970475200A93AA8 /* API */,
 				87E91BA22970454700A93AA8 /* Utilities */,
-				87E91B8E2970450000A93AA8 /* AppDelegate.swift */,
-				87E91B902970450000A93AA8 /* SceneDelegate.swift */,
-				87E91B942970450000A93AA8 /* Main.storyboard */,
-				87E91B972970450200A93AA8 /* Assets.xcassets */,
-				87E91B992970450200A93AA8 /* LaunchScreen.storyboard */,
-				872D3C4429786FB700D9EC0F /* GoogleService-Info.plist */,
-				87E91B9C2970450200A93AA8 /* Info.plist */,
+				8793CBB229A6202B00C8A268 /* Resources */,
+				8793CBB329A6204700C8A268 /* App */,
+				8793CBB429A6217300C8A268 /* Storyboards */,
 			);
 			path = TwitterTutorial;
 			sourceTree = "<group>";
@@ -602,14 +626,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5QF774VV5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TwitterTutorial/Info.plist;
+				INFOPLIST_FILE = TwitterTutorial/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -633,14 +656,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5QF774VV5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TwitterTutorial/Info.plist;
+				INFOPLIST_FILE = TwitterTutorial/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

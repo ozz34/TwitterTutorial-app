@@ -6,14 +6,17 @@
 //
 
 import UIKit
-import SDWebImage
 import ActiveLabel
 
 protocol TweetCellDelegate: AnyObject {
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTapped(_ cell: TweetCell)
     func handleLikeTapped(_ cell: TweetCell)
-    func handleFetchUser(withUserName userName: String)
+    func handleFetchUserFromFeedController(withUserName userName: String)
+}
+
+protocol TweetCellMentionDelegate: AnyObject {
+    func handleFetchUserFromTweetController(withUserName userName: String)
 }
 
 class TweetCell: UICollectionViewCell {
@@ -25,6 +28,7 @@ class TweetCell: UICollectionViewCell {
     }
     
     weak var delegate: TweetCellDelegate?
+    weak var mentionDelegate: TweetCellMentionDelegate?
     
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -34,7 +38,8 @@ class TweetCell: UICollectionViewCell {
         iv.layer.cornerRadius = 48 / 2
         iv.backgroundColor = .twitterBlue
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
         
@@ -62,28 +67,36 @@ class TweetCell: UICollectionViewCell {
     
     private lazy var commentButton: UIButton = {
       let button = createButton(withImageName: "comment")
-        button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleCommentTapped),
+                         for: .touchUpInside)
         
         return button
     }()
     
     private lazy var retweetButton: UIButton = {
       let button = createButton(withImageName: "retweet")
-        button.addTarget(self, action: #selector(handleRetweetTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleRetweetTapped),
+                         for: .touchUpInside)
         
         return button
     }()
     
     private lazy var likeButton: UIButton = {
       let button = createButton(withImageName: "like")
-        button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleLikeTapped),
+                         for: .touchUpInside)
         
         return button
     }()
     
     private lazy var shareButton: UIButton = {
       let button = createButton(withImageName: "share")
-        button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleShareTapped),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -91,23 +104,25 @@ class TweetCell: UICollectionViewCell {
     private let infoLabel = UILabel()
     
     //MARK: -Lifecycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     
         backgroundColor = .white
 
-        let captionStack = UIStackView(arrangedSubviews: [infoLabel, captionLabel])
+        let captionStack = UIStackView(arrangedSubviews: [infoLabel,
+                                                          captionLabel])
         captionStack.axis = .vertical
         captionStack.spacing = 4
         captionStack.distribution = .fillProportionally
         
-        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView, captionStack])
+        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView,
+                                                               captionStack])
         imageCaptionStack.distribution = .fillProportionally
         imageCaptionStack.alignment = .leading
         imageCaptionStack.spacing = 12
                
-        let stack = UIStackView(arrangedSubviews: [replyLabel, imageCaptionStack])
+        let stack = UIStackView(arrangedSubviews: [replyLabel,
+                                                   imageCaptionStack])
         stack.axis = .vertical
         stack.spacing = 8
         stack.distribution = .fillProportionally
@@ -155,42 +170,50 @@ class TweetCell: UICollectionViewCell {
     @objc func handleCommentTapped() {
         delegate?.handleReplyTapped(self)
     }
+    //TODO: create retweet action
     @objc func handleRetweetTapped() {
-        
     }
+    
     @objc func handleLikeTapped() {
         delegate?.handleLikeTapped(self)
     }
+    //TODO: create share action
     @objc func handleShareTapped() {
-        
     }
     
     //MARK: -Helpers
-    func configure() {
+    private func configure() {
         guard let tweet else { return }
         let viewModel = TweetViewModel(tweet: tweet)
+        
         captionLabel.text = tweet.caption
         profileImageView.sd_setImage(with: viewModel.profileImageUrl)
         infoLabel.attributedText = viewModel.userInfoText
+        
         likeButton.tintColor = viewModel.likeButtonTintColor
         likeButton.setImage(viewModel.likeButtonImage, for: .normal)
+        
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
         replyLabel.text = viewModel.replyText
     }
     
-    func createButton(withImageName imageName: String) -> UIButton {
+    private func createButton(withImageName imageName: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-        button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
         
         return button
     }
     
-    func configureMentionHandler() {
+    private func configureMentionHandler() {
+        replyLabel.handleMentionTap { username in
+            self.mentionDelegate?.handleFetchUserFromTweetController(withUserName: username)
+        }
+        
         captionLabel.handleMentionTap { username in
-            self.delegate?.handleFetchUser(withUserName: username)
+            self.delegate?.handleFetchUserFromFeedController(withUserName: username)
+            self.mentionDelegate?.handleFetchUserFromTweetController(withUserName: username)
         }
     }
 }
