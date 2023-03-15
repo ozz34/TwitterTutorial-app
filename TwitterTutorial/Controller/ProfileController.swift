@@ -8,17 +8,15 @@
 import UIKit
 import Firebase
 
-class ProfileController: UICollectionViewController {
-    //MARK: -Properties
+final class ProfileController: UICollectionViewController {
+    // MARK: - Properties
     private let identifier = "TweetCell"
     private let headerIdentifier = "ProfileHeader"
     
     private var user: User
     
     private var selectedFilter: ProfileFilterOptions = .tweets {
-        didSet {
-            collectionView.reloadData()
-        }
+        didSet { collectionView.reloadData() }
     }
     
     private var tweets = [Tweet]()
@@ -36,7 +34,7 @@ class ProfileController: UICollectionViewController {
         }
     }
         
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User) {
         self.user = user
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -48,7 +46,6 @@ class ProfileController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         configureCollectionView()
         fetchTweets()
         fetchLikedTweets()
@@ -59,46 +56,45 @@ class ProfileController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isHidden = true
     }
     
-    //MARK: -API
+    // MARK: - API
    private func fetchTweets() {
-        TweetService.shared.fetchTweets(forUser: user) { tweets in
-            self.tweets = tweets
-            self.collectionView.reloadData()
+        TweetService.shared.fetchTweets(forUser: user) { [weak self] tweets in
+            self?.tweets = tweets
+            self?.collectionView.reloadData()
         }
     }
     
     private func fetchLikedTweets() {
-        TweetService.shared.fetchLikes(forUser: user) { likedTweets in
-            self.likedTweets = likedTweets
+        TweetService.shared.fetchLikes(forUser: user) { [weak self] likedTweets in
+            self?.likedTweets = likedTweets
         }
     }
     
     private func fetchReplies() {
-        TweetService.shared.fetchReplies(forUser: user) { replies in
-            self.replies = replies
+        TweetService.shared.fetchReplies(forUser: user) { [weak self] replies in
+            self?.replies = replies
         }
     }
     
     private func checkIfUserIsFollowed() {
-        UserService.shared.checkUserIsFollowed(uid: user.uid) { isFollowed  in
-            self.user.isFollowed = isFollowed
-            self.collectionView.reloadData()
+        UserService.shared.checkUserIsFollowed(uid: user.uid) { [weak self] isFollowed  in
+            self?.user.isFollowed = isFollowed
+            self?.collectionView.reloadData()
         }
     }
     
     private func fetchUserStats() {
-        UserService.shared.fetchUserStats(uid: user.uid) { stats in
-            self.user.stats = stats
-            self.collectionView.reloadData()
+        UserService.shared.fetchUserStats(uid: user.uid) { [weak self] stats in
+            self?.user.stats = stats
+            self?.collectionView.reloadData()
         }
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureCollectionView() {
         collectionView.contentInsetAdjustmentBehavior = .never
         
@@ -111,66 +107,62 @@ class ProfileController: UICollectionViewController {
     }
 }
 
-// MARK: -UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension ProfileController {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
         currentDataSource.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
-        
         let tweet = currentDataSource[indexPath.row]
         cell.tweet = tweet
         cell.mentionDelegate = self
-        
         return cell
     }
 }
-// MARK: -UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath)
                 as? ProfileHeader else { return UICollectionReusableView() }
         header.user = user
         header.delegate = self
-        
         return header
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let controller = TweetController(tweet: currentDataSource[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
 }
 
-// MARK: -UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 extension ProfileController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
         var height: CGFloat = 300
         if user.bio != nil {
             height += 40
         }
-            
         return CGSize(width: view.frame.width, height: height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = TweetViewModel(tweet: currentDataSource[indexPath.row])
         var height = viewModel.size(forWidth: view.frame.width).height + 72
         
         if currentDataSource[indexPath.row].isReply {
             height += 20
         }
-        
         return CGSize(width: view.frame.width, height: height)
     }
 }
 
-//MARK: - ProfileHeaderDelegate
+// MARK: - ProfileHeaderDelegate
 extension ProfileController: ProfileHeaderDelegate {
     func didSelect(filter: ProfileFilterOptions) {
         self.selectedFilter = filter
@@ -204,19 +196,19 @@ extension ProfileController: ProfileHeaderDelegate {
             }
         }
     }
-
+    
     func handleDismissal() {
         navigationController?.popViewController(animated: true)
     }
 }
 
-//MARK: - EditProfileControllerDelegate
+// MARK: - EditProfileControllerDelegate
 extension ProfileController: EditProfileControllerDelegate {
     func handleLogout() {
-            do {
-                try Auth.auth().signOut()
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
+        do {
+            try Auth.auth().signOut()
+            let nav = UINavigationController(rootViewController: LoginController())
+            nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: true)
             } catch let error {
                 print("Error: \(error.localizedDescription)")
@@ -230,11 +222,12 @@ extension ProfileController: EditProfileControllerDelegate {
     }
 }
 
+// MARK: - TweetCellMentionDelegate
 extension ProfileController: TweetCellMentionDelegate {
     func handleFetchUserFromTweetController(withUserName userName: String) {
-        UserService.shared.fetchUser(withUsername: userName) { user in
+        UserService.shared.fetchUser(withUsername: userName) { [weak self] user in
             let controller = ProfileController(user: user)
-            self.navigationController?.pushViewController(controller, animated: true)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

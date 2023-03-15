@@ -7,15 +7,16 @@
 
 import UIKit
 
+// MARK: - EditProfileHeaderDelegate
 protocol EditProfileHeaderDelegate: AnyObject {
     func didTapChangeProfilePhoto()
 }
 
-class EditProfileHeader: UIView {
-    //MARK: -Properties
-    private let user: User
-    
+final class EditProfileHeader: UIView {
+    // MARK: - Properties
     weak var delegate: EditProfileHeaderDelegate?
+    
+    private let user: User
     
     let profileImageView: UIImageView = {
        let iv = UIImageView()
@@ -24,7 +25,6 @@ class EditProfileHeader: UIView {
         iv.backgroundColor = .lightGray
         iv.layer.borderColor = UIColor.white.cgColor
         iv.layer.borderWidth = 3
-        
         return iv
     }()
     
@@ -33,14 +33,13 @@ class EditProfileHeader: UIView {
         button.setTitle("Change Profile Photo", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
-        
         button.addTarget(self,
                          action: #selector(handleChangeProfilePhoto),
                          for: .touchUpInside)
         return button
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User) {
         self.user = user
         super.init(frame: .zero)
@@ -65,7 +64,7 @@ class EditProfileHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleChangeProfilePhoto() {
         delegate?.didTapChangeProfilePhoto()
     }

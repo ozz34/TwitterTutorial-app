@@ -7,12 +7,10 @@
 
 import UIKit
 
-class UserCell: UITableViewCell {
-    //MARK: -Properties
+final class UserCell: UITableViewCell {
+    // MARK: - Properties
     var user: User? {
-        didSet {
-            configureCell()
-        }
+        didSet { configureCell() }
     }
     
     private let profileImageView: UIImageView = {
@@ -22,25 +20,22 @@ class UserCell: UITableViewCell {
         iv.setDimensions(width: 40, height: 40)
         iv.layer.cornerRadius = 40 / 2
         iv.backgroundColor = .twitterBlue
-
         return iv
     }()
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
-        
         return label
     }()
     
     private let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        
         return label
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lyfecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -63,7 +58,7 @@ class UserCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureCell() {
         guard let user else { return }
         

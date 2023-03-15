@@ -7,18 +7,20 @@
 
 import UIKit
 
+// MARK: - ActionSheetLauncherDelegate
 protocol ActionSheetLauncherDelegate: AnyObject {
     func didSelect(option: ActionSheetOptions)
 }
 
-class ActionSheetLauncher: NSObject {
-    //MARK: -Properties
+final class ActionSheetLauncher: NSObject {
+    // MARK: - Properties
+    weak var delegate: ActionSheetLauncherDelegate?
+    
     private let user: User
     private let tableView = UITableView()
     private let identifier = "ActionSheetCell"
     private var window: UIWindow?
     private lazy var viewModel = ActionSheetViewModel(user: user)
-    weak var delegate: ActionSheetLauncherDelegate?
     private var tableViewHeight: CGFloat?
     
     private lazy var blackView: UIView = {
@@ -28,10 +30,9 @@ class ActionSheetLauncher: NSObject {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(handleDismissal))
         view.addGestureRecognizer(tap)
-        
         return view
     }()
-    
+
     private lazy var footerView: UIView = {
        let view = UIView()
         
@@ -42,7 +43,6 @@ class ActionSheetLauncher: NSObject {
                             paddingLeft: 12,
                             paddingRight: 12)
         cancelButton.centerY(inView: view)
-        
         return view
     }()
     
@@ -54,18 +54,17 @@ class ActionSheetLauncher: NSObject {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.layer.cornerRadius = 50 / 2
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
-     
         return button
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User) {
         self.user = user
         super.init()
-        
         configureTableView()
     }
-    //MARK: -Selectors
+    
+    // MARK: - Selectors
     @objc func handleDismissal() {
         UIView.animate(withDuration: 0.5) {
             self.blackView.alpha = 0
@@ -73,7 +72,7 @@ class ActionSheetLauncher: NSObject {
         }
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func showTableView(_ shouldShow: Bool) {
         guard let window else { return }
         guard let height = tableViewHeight else { return }
@@ -82,7 +81,6 @@ class ActionSheetLauncher: NSObject {
     }
     
     func show() {
-        
         guard let window = UIApplication.shared.connectedScenes.compactMap({($0 as? UIWindowScene)?.keyWindow }).first else { return }
         self.window = window
         window.makeKeyAndVisible()
@@ -116,28 +114,31 @@ class ActionSheetLauncher: NSObject {
         tableView.register(ActionSheetCell.self, forCellReuseIdentifier: identifier)
     }
 }
-// MARK: -UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension ActionSheetLauncher: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         viewModel.options.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ActionSheetCell
         else { return UITableViewCell()}
         cell.option = viewModel.options[indexPath.row]
-        
         return cell
     }
 }
 
-// MARK: -UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension ActionSheetLauncher: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView,
+                   viewForFooterInSection section: Int) -> UIView? {
         footerView
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView,
+                   heightForFooterInSection section: Int) -> CGFloat {
         60
     }
     

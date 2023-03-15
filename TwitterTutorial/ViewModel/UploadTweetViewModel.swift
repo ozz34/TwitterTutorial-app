@@ -5,7 +5,7 @@
 //  Created by Иван Худяков on 07.02.2023.
 //
 
-import UIKit
+import Foundation
 
 enum UploadTweetConfiguration {
     case tweet
@@ -13,13 +13,13 @@ enum UploadTweetConfiguration {
 }
 
 struct UploadTweetViewModel {
-    //MARK: -Properties
+    // MARK: - Properties
     let actionButtonTitle: String
     let placeholderText: String
     var shouldShowReplyLabel: Bool
     var replyText: String?
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(config: UploadTweetConfiguration) {
         switch config {
         case .tweet:

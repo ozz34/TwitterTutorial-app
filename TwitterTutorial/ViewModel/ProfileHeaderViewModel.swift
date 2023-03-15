@@ -22,12 +22,12 @@ enum ProfileFilterOptions: Int, CaseIterable {
 }
 
 struct ProfileHeaderViewModel {
-    //MARK: -Properties
-    private let user: User
-   
+    // MARK: - Properties
     let userNameText: String
     let fullNameText: String
     let bioText: String
+    
+    private let user: User
     
     var followersText: NSAttributedString? {
         return attributedText(withValue: user.stats?.followers ?? 0, text: " followers")
@@ -47,7 +47,7 @@ struct ProfileHeaderViewModel {
         }
     }
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User){
         self.user = user
         self.userNameText = "@" + user.userName
@@ -55,7 +55,7 @@ struct ProfileHeaderViewModel {
         self.bioText = user.bio ?? ""
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func attributedText(withValue value: Int, text: String) -> NSAttributedString {
         let attributedTitle = NSMutableAttributedString(string: "\(value)",
                                                         attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -63,7 +63,6 @@ struct ProfileHeaderViewModel {
                                                   attributes: [.font: UIFont.boldSystemFont(ofSize: 14),
                                                                .foregroundColor: UIColor.lightGray]
                                                  ))
-        
         return attributedTitle
     }
 }

@@ -24,7 +24,6 @@ struct User {
     
     init(dictionary: [String: Any], uid: String) {
         self.uid = uid
-        
         self.email = dictionary["email"] as? String ?? ""
         self.fullName = dictionary["fullname"] as? String ?? ""
         self.userName = dictionary["username"] as? String ?? ""

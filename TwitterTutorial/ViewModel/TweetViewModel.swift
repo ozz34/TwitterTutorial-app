@@ -8,7 +8,7 @@
 import UIKit
 
 struct TweetViewModel {
-    //MARK: -Properties
+    // MARK: - Properties
     let tweet: Tweet
     let user: User
     
@@ -16,20 +16,9 @@ struct TweetViewModel {
         tweet.user.profileImageUrl
     }
     
-    private var timestamp: String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
-        formatter.maximumUnitCount = 1
-        formatter.unitsStyle = .abbreviated
-        let now = Date()
-        return formatter.string(from: tweet.timestamp, to: now) ?? "2m"
-        
-    }
-    
     var headerTimestamp: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a ・ MM/dd/yyyy"
-        
         return formatter.string(from: tweet.timestamp)
     }
     
@@ -43,7 +32,6 @@ struct TweetViewModel {
     
     var likesAttributedString: NSAttributedString? {
         return attributedText(withValue: tweet.likes, text: " Likes")
-        
     }
     
     var userInfoText: NSAttributedString {
@@ -77,7 +65,16 @@ struct TweetViewModel {
         return "→ replying to @\(replyingToUsername)"
     }
     
-    //MARK: -Lyfecycle
+    private var timestamp: String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .abbreviated
+        let now = Date()
+        return formatter.string(from: tweet.timestamp, to: now) ?? "2m"
+    }
+    
+    // MARK: - Lifecycle
     init(tweet: Tweet) {
         self.tweet = tweet
         self.user = tweet.user
@@ -89,11 +86,10 @@ struct TweetViewModel {
         attributedTitle.append(NSAttributedString(string: text,
                                                   attributes: [.font: UIFont.boldSystemFont(ofSize: 14),
                                                                .foregroundColor: UIColor.lightGray]))
-        
         return attributedTitle
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     func size(forWidth width: CGFloat) -> CGSize {
         let measurementLabel = UILabel()
         measurementLabel.text = tweet.caption
@@ -101,7 +97,6 @@ struct TweetViewModel {
         measurementLabel.lineBreakMode = .byWordWrapping
         measurementLabel.translatesAutoresizingMaskIntoConstraints = false
         measurementLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        
         return measurementLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }

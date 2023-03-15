@@ -7,12 +7,10 @@
 
 import UIKit
 
-class ActionSheetCell: UITableViewCell {
-    //MARK: -Properties
+final class ActionSheetCell: UITableViewCell {
+    // MARK: - Properties
     var option: ActionSheetOptions? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     
     private let optionImageView: UIImageView = {
@@ -20,18 +18,16 @@ class ActionSheetCell: UITableViewCell {
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "twitter_logo_blue")
-        
         return iv
     }()
     
     private let titleLabel: UILabel = {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
-        
         return label
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -49,7 +45,7 @@ class ActionSheetCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         titleLabel.text = option?.description
     }

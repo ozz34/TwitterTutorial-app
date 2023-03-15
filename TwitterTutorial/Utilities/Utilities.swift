@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Utilities {
+final class Utilities {
     
     func inputContainerView(with image: UIImage, textField: UITextField) -> UIView {
         let view = UIView()
@@ -16,7 +16,10 @@ class Utilities {
         let iv = UIImageView()
         iv.image = image
         view.addSubview(iv)
-        iv.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 8, paddingBottom: 8)
+        iv.anchor(left: view.leftAnchor,
+                  bottom: view.bottomAnchor,
+                  paddingLeft: 8,
+                  paddingBottom: 8)
         iv.setDimensions(width: 24, height: 24)
         
         view.addSubview(textField)
@@ -33,7 +36,6 @@ class Utilities {
                            bottom: view.bottomAnchor,
                            right: view.rightAnchor,
                            height: 0.75)
-    
         return view
     }
     
@@ -44,7 +46,6 @@ class Utilities {
          tf.font = UIFont.systemFont(ofSize: 16)
          tf.attributedPlaceholder = NSAttributedString(string: placeholder,
                                                        attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-         
         return tf
     }
     
@@ -58,8 +59,6 @@ class Utilities {
                                                   attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
                                                               NSAttributedString.Key.foregroundColor: UIColor.white]))
         button.setAttributedTitle(attributedTitle, for: .normal)
-        
         return button
     }
 }
-

@@ -8,6 +8,7 @@
 import UIKit
 import ActiveLabel
 
+// MARK: - TweetCellDelegate
 protocol TweetCellDelegate: AnyObject {
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTapped(_ cell: TweetCell)
@@ -15,16 +16,15 @@ protocol TweetCellDelegate: AnyObject {
     func handleFetchUserFromFeedController(withUserName userName: String)
 }
 
+// MARK: - TweetCellMentionDelegate
 protocol TweetCellMentionDelegate: AnyObject {
     func handleFetchUserFromTweetController(withUserName userName: String)
 }
 
-class TweetCell: UICollectionViewCell {
-    //MARK: -Properties
+final class TweetCell: UICollectionViewCell {
+    //MARK: - Properties
     var tweet: Tweet? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     
     weak var delegate: TweetCellDelegate?
@@ -42,7 +42,6 @@ class TweetCell: UICollectionViewCell {
                                          action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
-        
         return iv
     }()
     
@@ -51,7 +50,6 @@ class TweetCell: UICollectionViewCell {
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
         label.mentionColor = .twitterBlue
-
         return label
     }()
     
@@ -61,7 +59,6 @@ class TweetCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.mentionColor = .twitterBlue
         label.hashtagColor = .twitterBlue
-        
         return label
     }()
     
@@ -70,7 +67,6 @@ class TweetCell: UICollectionViewCell {
         button.addTarget(self,
                          action: #selector(handleCommentTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -79,7 +75,6 @@ class TweetCell: UICollectionViewCell {
         button.addTarget(self,
                          action: #selector(handleRetweetTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -88,7 +83,6 @@ class TweetCell: UICollectionViewCell {
         button.addTarget(self,
                          action: #selector(handleLikeTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -97,13 +91,12 @@ class TweetCell: UICollectionViewCell {
         button.addTarget(self,
                          action: #selector(handleShareTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
     private let infoLabel = UILabel()
     
-    //MARK: -Lifecycle
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
     
@@ -162,7 +155,7 @@ class TweetCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleProfileImageTapped() {
         delegate?.handleProfileImageTapped(self)
     }
@@ -170,18 +163,18 @@ class TweetCell: UICollectionViewCell {
     @objc func handleCommentTapped() {
         delegate?.handleReplyTapped(self)
     }
-    //TODO: create retweet action
+    // TODO: create retweet action
     @objc func handleRetweetTapped() {
     }
     
     @objc func handleLikeTapped() {
         delegate?.handleLikeTapped(self)
     }
-    //TODO: create share action
+    // TODO: create share action
     @objc func handleShareTapped() {
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         guard let tweet else { return }
         let viewModel = TweetViewModel(tweet: tweet)
@@ -202,7 +195,6 @@ class TweetCell: UICollectionViewCell {
         button.setImage(UIImage(named: imageName), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-        
         return button
     }
     
@@ -217,4 +209,3 @@ class TweetCell: UICollectionViewCell {
         }
     }
 }
-

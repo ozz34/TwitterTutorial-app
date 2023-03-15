@@ -28,7 +28,7 @@ enum ActionSheetOptions {
 }
 
 struct ActionSheetViewModel {
-    //MARK: -Properties
+    // MARK: - Properties
     private let user: User
     
     var options: [ActionSheetOptions] {
@@ -45,7 +45,7 @@ struct ActionSheetViewModel {
         return results
     }
 
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User) {
         self.user = user
     }

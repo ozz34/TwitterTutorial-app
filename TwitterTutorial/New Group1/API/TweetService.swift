@@ -7,13 +7,13 @@
 
 import Firebase
 
-class TweetService {
-    //MARK: -Properties, Lyfecycle
+final class TweetService {
+    // MARK: -Properties, Lifecycle
     static let shared = TweetService()
     
     private init() {}
     
-    //MARK: -Helpers
+    // MARK: - Upload
     func uploadTweet(caption: String, type: UploadTweetConfiguration,
                      completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -23,7 +23,6 @@ class TweetService {
                                      "likes": 0,
                                      "retweets": 0,
                                      "caption": caption]
-        
         switch type {
         case .tweet:
             REF_TWEETS.childByAutoId().updateChildValues(values) { error, ref in
@@ -40,11 +39,11 @@ class TweetService {
                     guard let replyKey = ref.key else { return }
                     
                     REF_USER_REPLIES.child(uid).updateChildValues([tweet.tweetId: replyKey], withCompletionBlock: completion)
-                    
             }
         }
     }
     
+    // MARK: - Fetch
     func fetchTweets(completion: @escaping([Tweet])-> Void) {
         var tweets = [Tweet]()
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -154,6 +153,7 @@ class TweetService {
         }
     }
     
+    // MARK: - Like tweet and check
     func likeTweet(tweet: Tweet, completion: @escaping DatabaseCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -180,4 +180,3 @@ class TweetService {
         }
     }
 }
-

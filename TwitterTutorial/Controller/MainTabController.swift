@@ -13,13 +13,12 @@ enum ActionButtonConfiguration {
     case message
 }
 
-class MainTabController: UITabBarController {
-    //MARK: -Properties
+final class MainTabController: UITabBarController {
+    // MARK: - Properties
     var user: User? {
         didSet {
             guard let nav = viewControllers?.first as? UINavigationController else { return }
             guard let feed = nav.topViewController as? FeedController else { return }
-            
             feed.user = user
         }
     }
@@ -37,19 +36,18 @@ class MainTabController: UITabBarController {
         return button
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .twitterBlue
         autenticateUserAndConfigureUI()
     }
     
-    //MARK: -API
+    // MARK: - API
     private func fetchUser() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        UserService.shared.fetchUser(uid: uid) { user in
-            self.user = user
+        UserService.shared.fetchUser(uid: uid) { [weak self] user in
+            self?.user = user
         }
     }
 
@@ -67,10 +65,9 @@ class MainTabController: UITabBarController {
         }
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func actionButtonTapped() {
         let controller: UIViewController
-    
         switch buttonConfig {
         case .tweet:
             guard let user = user else { return }
@@ -84,7 +81,7 @@ class MainTabController: UITabBarController {
         present(nav, animated: true)
     }
 
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureUI() {
         self.delegate = self
         
@@ -119,29 +116,30 @@ class MainTabController: UITabBarController {
         viewControllers = [nav1, nav2, nav3, nav4]
     }
     
-    private func templateNavigationController(image: UIImage, rootViewController: UIViewController) -> UINavigationController {
+    private func templateNavigationController(image: UIImage,
+                                              rootViewController: UIViewController) -> UINavigationController {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem.image = image
         nav.navigationBar.barTintColor = .white
-      //  nav.addCustomBottomLine()
-
+        //Custom bottom line functionality for another design
+        //nav.addCustomBottomLine()
         return nav
     }
 }
 
-//MARK: - UITabBarControllerDelegate
+// MARK: - UITabBarControllerDelegate
 extension MainTabController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController,
+                          didSelect viewController: UIViewController) {
         let index = viewControllers?.firstIndex(of: viewController)
         let imageName = index == 3 ?  "mail" : "new_tweet"
         actionButton.setImage(UIImage(named: imageName), for: .normal)
         buttonConfig = index == 3 ? .message: .tweet
     }
 }
-//MARK: - UINavigationController
+// MARK: - UINavigationController
 extension UINavigationController {
     func addCustomBottomLine() {
-       
         let lineView = UIView()
         lineView.backgroundColor = .systemGroupedBackground
         

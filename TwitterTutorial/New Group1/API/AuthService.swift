@@ -15,13 +15,12 @@ struct AuthCredentials {
     let profileImage: UIImage
 }
 
-class AuthService {
-    //MARK: -Properties, Lyfecycle
+final class AuthService {
+    // MARK: - Properties, Lifecycle
     static let shared = AuthService()
     
     private init() {}
     
-    //MARK: -Helpers
     func logUserIn(withEmail email: String, password: String, completion: @escaping ((AuthDataResult?, Error?)-> Void)) {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }

@@ -8,7 +8,6 @@
 import Foundation
 
 struct Tweet {
-    
     let caption: String
     let tweetId: String
     var likes: Int
@@ -25,7 +24,6 @@ struct Tweet {
     init(tweetId: String, user: User, dictionary: [String: Any]) {
         self.tweetId = tweetId
         self.user = user
-        
         self.caption = dictionary["caption"] as? String ?? ""
         self.likes = dictionary["likes"] as? Int ?? 0
         self.retweetCount = dictionary["retweets"] as? Int ?? 0
@@ -33,7 +31,6 @@ struct Tweet {
         if let timestamp = dictionary["timestamp"] as? Double {
             self.timestamp = Date(timeIntervalSince1970: timestamp)
         }
-        
         if let replyingTo = dictionary["replyingTo"] as? String {
             self.replyingTo = replyingTo
         }

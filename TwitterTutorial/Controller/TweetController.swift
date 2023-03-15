@@ -7,13 +7,11 @@
 
 import UIKit
 
-class TweetController: UICollectionViewController {
-    //MARK: -Properties
+final class TweetController: UICollectionViewController {
+    // MARK: - Properties
     private let tweet: Tweet
     private var replies = [Tweet]() {
-        didSet {
-            collectionView.reloadData()
-        }
+        didSet { collectionView.reloadData() }
     }
     
     private var actionSheetLauncher: ActionSheetLauncher!
@@ -21,16 +19,14 @@ class TweetController: UICollectionViewController {
     private let identifier = "TweetCell"
     private let headerIdentifier = "TweetHeader"
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(tweet: Tweet) {
-        
         self.tweet = tweet
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barStyle = .default
     }
@@ -41,22 +37,20 @@ class TweetController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureCollectionView()
         fetchReplies()
     }
     
-    //MARK: -API
+    //MARK: - API
     private func fetchReplies() {
-        TweetService.shared.fetchReplies(forTweet: tweet) { replies in
-            self.replies = replies
+        TweetService.shared.fetchReplies(forTweet: tweet) { [weak self] replies in
+            self?.replies = replies
         }
     }
   
-    //MARK: -Helpers
+    //MARK: - Helpers
     private func configureCollectionView() {
        collectionView.backgroundColor = .white
-   
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
         collectionView.register(TweetHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
     }
@@ -68,7 +62,7 @@ class TweetController: UICollectionViewController {
     }
 }
 
-//MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 extension TweetController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
@@ -76,40 +70,41 @@ extension TweetController {
                 as? TweetHeader else { return UICollectionReusableView() }
         header.tweet = tweet
         header.delegate = self
-      
         return header
     }
 }
 
-//MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension TweetController {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
         replies.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
-        
         cell.tweet = replies[indexPath.row]
         cell.mentionDelegate = self
-        
         return cell
     }
 }
 
+// MARK: - TweetCellMentionDelegate
 extension TweetController: TweetCellMentionDelegate {
     func handleFetchUserFromTweetController(withUserName userName: String) {
-        UserService.shared.fetchUser(withUsername: userName) { user in
+        UserService.shared.fetchUser(withUsername: userName) { [weak self] user in
             let controller = ProfileController(user: user)
-            self.navigationController?.pushViewController(controller, animated: true)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 extension TweetController: UICollectionViewDelegateFlowLayout {
-   
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        func collectionView(_ collectionView: UICollectionView,
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            referenceSizeForHeaderInSection section: Int) -> CGSize {
             let viewModel = TweetViewModel(tweet: tweet)
             let captionHeight = viewModel.size(forWidth: view.frame.width).height
             
@@ -125,12 +120,12 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: view.frame.width, height: captionHeight + 85)
         }
 }
-//MARK: - TweetHeaderDelegate
+// MARK: - TweetHeaderDelegate
 extension TweetController: TweetHeaderDelegate {
     func handleFetchUser(withUserName userName: String) {
-        UserService.shared.fetchUser(withUsername: userName) { user in
+        UserService.shared.fetchUser(withUsername: userName) { [weak self] user in
             let controller = ProfileController(user: user)
-            self.navigationController?.pushViewController(controller, animated: true)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
@@ -146,7 +141,7 @@ extension TweetController: TweetHeaderDelegate {
         }
     }
 }
-//MARK: - ActionSheetLauncherDelegate
+// MARK: - ActionSheetLauncherDelegate
 extension TweetController: ActionSheetLauncherDelegate {
     func didSelect(option: ActionSheetOptions) {
         switch option {
@@ -158,7 +153,7 @@ extension TweetController: ActionSheetLauncherDelegate {
             UserService.shared.unfollowUser(uid: user.uid) { err, ref in
                 NotificationService.shared.uploadNotification(toUser: user, type: .unfollow)
             }
-        //TODO: realize functionality
+        // TODO: Realize functionality
         case .report:
             print("Report")
         case .delete: 

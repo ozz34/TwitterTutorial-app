@@ -7,12 +7,15 @@
 
 import UIKit
 
+// MARK: - EditProfileFooterDelegate
 protocol EditProfileFooterDelegate: AnyObject {
     func handleLogout()
 }
 
-class EditProfileFooter: UIView {
-    //MARK: -Properties
+final class EditProfileFooter: UIView {
+    // MARK: - Properties
+    weak var delegate: EditProfileFooterDelegate?
+    
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Logout", for: .normal)
@@ -21,13 +24,10 @@ class EditProfileFooter: UIView {
         button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
         button.backgroundColor = .red
         button.layer.cornerRadius = 5
-        
         return button
     }()
     
-    weak var delegate: EditProfileFooterDelegate?
-    
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -44,7 +44,7 @@ class EditProfileFooter: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleLogout() {
         delegate?.handleLogout()
     }

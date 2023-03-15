@@ -7,18 +7,17 @@
 
 import UIKit
 
+// MARK: - ProfileHeaderDelegate
 protocol ProfileHeaderDelegate: AnyObject {
     func handleDismissal()
     func handleEditProfileFollow()
     func didSelect(filter: ProfileFilterOptions)
 }
 
-class ProfileHeader: UICollectionReusableView {
-    //MARK: -Properties
+final class ProfileHeader: UICollectionReusableView {
+    // MARK: - Properties
     var user: User? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     
     weak var delegate: ProfileHeaderDelegate?
@@ -35,7 +34,6 @@ class ProfileHeader: UICollectionReusableView {
                           paddingTop: 42,
                           paddingLeft: 16)
         backButton.setDimensions(width: 30, height: 30)
-        
         return view
     }()
 
@@ -58,7 +56,6 @@ class ProfileHeader: UICollectionReusableView {
         iv.backgroundColor = .lightGray
         iv.layer.borderColor = UIColor.white.cgColor
         iv.layer.borderWidth = 4
-        
         return iv
     }()
     
@@ -71,7 +68,6 @@ class ProfileHeader: UICollectionReusableView {
         button.layer.cornerRadius = 32 / 2
         button.layer.borderColor = UIColor.twitterBlue.cgColor
         button.layer.borderWidth = 1.25
-        
         button.addTarget(self,
                          action: #selector(handleEditProfileFollow),
                          for: .touchUpInside)
@@ -82,14 +78,12 @@ class ProfileHeader: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 3
-
         return label
     }()
     
     private let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        
         return label
     }()
     
@@ -97,7 +91,6 @@ class ProfileHeader: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
-        
         return label
     }()
     
@@ -121,7 +114,7 @@ class ProfileHeader: UICollectionReusableView {
         return label
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lyfecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -186,12 +179,11 @@ class ProfileHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleDismissal() {
         delegate?.handleDismissal()
     }
-    
+
     @objc func handleEditProfileFollow() {
         delegate?.handleEditProfileFollow()
     }
@@ -205,7 +197,7 @@ class ProfileHeader: UICollectionReusableView {
         
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         guard let user else { return }
         let viewModel = ProfileHeaderViewModel(user: user)

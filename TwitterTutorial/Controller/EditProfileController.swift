@@ -7,16 +7,17 @@
 
 import UIKit
 
+// MARK: - EditProfileControllerDelegate
 protocol EditProfileControllerDelegate: AnyObject {
     func controller(_ controller: EditProfileController, wantsToUpdate user: User)
     func handleLogout()
 }
 
-class EditProfileController: UITableViewController {
-    //MARK: -Properties
-    private var user: User
-    
+final class EditProfileController: UITableViewController {
+    // MARK: - Properties
     weak var delegate: EditProfileControllerDelegate?
+    
+    private var user: User
     
     private lazy var headerView = EditProfileHeader(user: user)
     private let identifier = "EditProfileCell"
@@ -41,7 +42,7 @@ class EditProfileController: UITableViewController {
         }
     }
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User) {
         self.user = user
         super.init(style: .plain)
@@ -52,12 +53,13 @@ class EditProfileController: UITableViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         configureNavigationBar()
         configureTableView()
         configureImagePicker()
     }
     
-    //MARK: -API
+    // MARK: - API
     private func updateUserData() {
         if imageChanged && !userInfoChanged {
             updateProfileImage()
@@ -70,8 +72,8 @@ class EditProfileController: UITableViewController {
         }
         
         if imageChanged && userInfoChanged {
-            UserService.shared.saveUserData(user: user) { err, ref in
-                self.updateProfileImage()
+            UserService.shared.saveUserData(user: user) { [weak self] err, ref in
+                self?.updateProfileImage()
             }
         }
     }
@@ -85,7 +87,7 @@ class EditProfileController: UITableViewController {
         }
     }
 
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleCancel() {
         dismiss(animated: true)
     }
@@ -95,7 +97,7 @@ class EditProfileController: UITableViewController {
        updateUserData()
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureNavigationBar() {
 
         navigationController?.navigationBar.barTintColor = .twitterBlue
@@ -128,43 +130,45 @@ class EditProfileController: UITableViewController {
     }
 }
 
-//MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension EditProfileController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView,
+                            numberOfRowsInSection section: Int) -> Int {
         EditProfileOptions.allCases.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? EditProfileCell else { return UITableViewCell()}
-        
         guard let option = EditProfileOptions(rawValue: indexPath.row) else { return cell }
         cell.viewModel = EditProfileViewModel(user: user, option: option)
-        
         cell.delegate = self
- 
         return cell
     }
 }
 
-//MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension EditProfileController {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let option = EditProfileOptions(rawValue: indexPath.row) else { return 0 }
         return option == .bio ? 100 : 48
     }
 }
 
-//MARK: - EditProfileHeaderDelegate
+// MARK: - EditProfileHeaderDelegate
 extension EditProfileController: EditProfileHeaderDelegate {
     func didTapChangeProfilePhoto() {
         present(imagePicker,animated: true)
     }
 }
 
-//MARK: - EditProfileFooterDelegate
+// MARK: - EditProfileFooterDelegate
 extension EditProfileController: EditProfileFooterDelegate {
     func handleLogout() {
-        let alert = UIAlertController(title: nil, message: "Are you sure you want to log out?", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: nil,
+                                      message: "Are you sure you want to log out?",
+                                      preferredStyle: .actionSheet)
         let logOutAction = UIAlertAction(title: "Log out", style: .destructive) { _ in
             self.dismiss(animated: true)
             self.delegate?.handleLogout()
@@ -176,7 +180,7 @@ extension EditProfileController: EditProfileFooterDelegate {
     }
 }
 
-//MARK: - EditProfileCellDelegate
+// MARK: - EditProfileCellDelegate
 extension EditProfileController: EditProfileCellDelegate {
     func updateUserInfo(_ cell: EditProfileCell) {
         guard let viewModel = cell.viewModel else { return }
@@ -195,7 +199,7 @@ extension EditProfileController: EditProfileCellDelegate {
     }
 }
 
-//MARK: - UIImagePickerControllerDelegate
+// MARK: - UIImagePickerControllerDelegate
 extension EditProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }

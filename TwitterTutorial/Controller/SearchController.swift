@@ -13,22 +13,17 @@ enum SearchControllerConfiguration {
     case userSearch
 }
 
-class SearchController: UITableViewController {
-    //MARK: -Properties
-    
+final class SearchController: UITableViewController {
+    // MARK: - Properties
     private let config: SearchControllerConfiguration
     
     private let identifier = "UserCell"
     private var users = [User]() {
-        didSet {
-            tableView.reloadData()
-        }
+        didSet { tableView.reloadData() }
     }
     
     private var filteredUsers = [User]() {
-        didSet {
-            tableView.reloadData()
-        }
+        didSet { tableView.reloadData() }
     }
     
     private var isSearchMode: Bool {
@@ -37,7 +32,7 @@ class SearchController: UITableViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(config: SearchControllerConfiguration) {
         self.config = config
         super.init(style: .plain)
@@ -49,7 +44,6 @@ class SearchController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         fetchUsers()
         configureSearchController()
@@ -57,25 +51,24 @@ class SearchController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barStyle = .default
         searchController.searchBar.text = ""
     }
     
-    //MARK: -API
+    //MARK: - API
     private func fetchUsers() {
-        UserService.shared.fetchUsers { users in
-            self.users = users
+        UserService.shared.fetchUsers { [weak self] users in
+            self?.users = users
         }
     }
     
-    //MARK: -Selectors
+    //MARK: - Selectors
     @objc func handleDismissal() {
         dismiss(animated: true)
     }
     
-    //MARK: -Helpers
+    //MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = config == .messages ? "New message" : "Explore"
@@ -84,13 +77,14 @@ class SearchController: UITableViewController {
         tableView.separatorStyle = .none
         
         if config == .messages {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleDismissal))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                               target: self,
+                                                               action: #selector(handleDismissal))
         }
     }
     
     private func configureSearchController() {
         searchController.searchResultsUpdater = self
-
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search for a user"
@@ -99,32 +93,34 @@ class SearchController: UITableViewController {
     }
 }
 
-
+//MARK: - UITableViewDataSource
 extension SearchController {
-    //MARK: -UITableViewDataSource
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView,
+                            numberOfRowsInSection section: Int) -> Int {
         return isSearchMode ? filteredUsers.count : users.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? UserCell else { return
             UITableViewCell() }
-        
         let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
         cell.user = user
-        
         return cell
     }
-    
-    //MARK: -UITableViewDelegate
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+}
+
+// MARK: - UITableViewDelegate
+extension SearchController {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
     }
 }
 
-//MARK: -UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating
 extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }

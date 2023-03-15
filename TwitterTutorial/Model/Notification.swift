@@ -17,7 +17,6 @@ enum NotificationType: Int {
 }
 
 struct Notification {
-    
     var tweetId: String?
     var timestamp: Date!
     var user: User

@@ -7,12 +7,10 @@
 
 import UIKit
 
-class FeedController: UICollectionViewController {
-    //MARK: -Properties
+final class FeedController: UICollectionViewController {
+    //MARK: - Properties
     var user: User? {
-        didSet {
-            configureLeftBarButton()
-        }
+        didSet { configureLeftBarButton() }
     }
     
     private let identifier = "TweetCell"
@@ -23,45 +21,42 @@ class FeedController: UICollectionViewController {
         }
     }
     
-    //MARK: -Lyfecycle
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         fetchTweets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
     }
     
-    //MARK: -API
+    //MARK: - API
     func fetchTweets() {
         collectionView.refreshControl?.beginRefreshing()
-        TweetService.shared.fetchTweets { tweets in
-            self.tweets = tweets.sorted(by: { $0.timestamp > $1.timestamp })
-            self.checkIfUserLikedTweets()
-        
-            self.collectionView.refreshControl?.endRefreshing()
+        TweetService.shared.fetchTweets { [weak self] tweets in
+            self?.tweets = tweets.sorted(by: { $0.timestamp > $1.timestamp })
+            self?.checkIfUserLikedTweets()
+            self?.collectionView.refreshControl?.endRefreshing()
         }
     }
     
     private func checkIfUserLikedTweets() {
         self.tweets.forEach { tweet in
-            TweetService.shared.checkIsUserLikedTweet(tweet: tweet) { didLike in
+            TweetService.shared.checkIsUserLikedTweet(tweet: tweet) { [weak self] didLike in
                 guard didLike == true else { return }
                
-                if let index = self.tweets.firstIndex(where: { $0.tweetId == tweet.tweetId }) {
-                    self.tweets[index].didLike = true
+                if let index = self?.tweets.firstIndex(where: { $0.tweetId == tweet.tweetId }) {
+                    self?.tweets[index].didLike = true
                 }
             }
         }
     }
     
-    //MARK: -Selectors
+    //MARK: - Selectors
     @objc func handleRefresh() {
         fetchTweets()
     }
@@ -72,9 +67,8 @@ class FeedController: UICollectionViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    //MARK: -Helpers
+    //MARK: - Helpers
     private func configureUI() {
-        
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
         
         let imageView = UIImageView(image: UIImage(named: "twitter_logo_blue"))
@@ -107,31 +101,31 @@ class FeedController: UICollectionViewController {
     }
 }
 
-//MARK: -UICollectionViewDataSource
+//MARK: - UICollectionViewDataSource
 extension FeedController {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
         tweets.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell()}
-        
         cell.delegate = self
         let tweet = tweets[indexPath.row]
         cell.tweet = tweet
-        
         return cell
     }
 
-//MARK: -UICollectionViewDelegate
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+//MARK: - UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView,
+                                 didSelectItemAt indexPath: IndexPath) {
         let controller = TweetController(tweet: tweets[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
 }
 
-//MARK: -UICollectionViewDelegateFlowLayout
+//MARK: - UICollectionViewDelegateFlowLayout
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = TweetViewModel(tweet: tweets[indexPath.row])
@@ -141,7 +135,7 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: -TweetCellDelegate
+// MARK: - TweetCellDelegate
 extension FeedController: TweetCellDelegate {
     func handleLikeTapped(_ cell: TweetCell) {
         guard let tweet = cell.tweet else { return }
@@ -174,10 +168,9 @@ extension FeedController: TweetCellDelegate {
     }
     
     func handleFetchUserFromFeedController(withUserName userName: String) {
-        UserService.shared.fetchUser(withUsername: userName) { user in
+        UserService.shared.fetchUser(withUsername: userName) { [weak self] user in
            let controller = ProfileController(user: user)
-           self.navigationController?.pushViewController(controller, animated: true)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }
-   

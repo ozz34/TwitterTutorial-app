@@ -9,8 +9,8 @@ import UIKit
 import SDWebImage
 import ActiveLabel
 
-class UploadTweetController: UIViewController {
-    //MARK: -Properties
+final class UploadTweetController: UIViewController {
+    // MARK: - Properties
     private let user: User
     private let config: UploadTweetConfiguration
     private lazy var viewModel = UploadTweetViewModel(config: config)
@@ -38,7 +38,6 @@ class UploadTweetController: UIViewController {
         iv.setDimensions(width: 48, height: 48)
         iv.layer.cornerRadius = 48 / 2
         iv.backgroundColor = .twitterBlue
-        
         return iv
     }()
     
@@ -50,11 +49,10 @@ class UploadTweetController: UIViewController {
         label.textColor = .lightGray
         label.mentionColor = .twitterBlue
         label.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        
         return label
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User, config: UploadTweetConfiguration) {
         self.user = user
         self.config = config
@@ -67,41 +65,38 @@ class UploadTweetController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         configureMentionHandler()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleCancel() {
         dismiss(animated: true)
     }
     
     @objc func handleUploadTweet() {
         guard let caption = captionTextView.text else { return }
-        TweetService.shared.uploadTweet(caption: caption, type: config) { error, ref in
+        TweetService.shared.uploadTweet(caption: caption, type: config) { [weak self] error, ref in
             if let error {
                 print("Debug: Failed to upload tweet with error: \(error.localizedDescription)")
                 return
             }
-            if case .reply(let tweet) = self.config {
+            if case .reply(let tweet) = self?.config {
                 NotificationService.shared.uploadNotification(toUser: tweet.user,
                                                               type: .reply,
                                                               tweetID: tweet.tweetId)
             }
-            
-            self.dismiss(animated: true)
+            self?.dismiss(animated: true)
         }
     }
 
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
         configureNavigationBar()
@@ -142,7 +137,7 @@ class UploadTweetController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
     
-    func configureMentionHandler() {
+    private func configureMentionHandler() {
         replyLabel.handleMentionTap { mention in
             let controller = ProfileController(user: self.user)
             self.navigationController?.pushViewController(controller, animated: true)

@@ -8,7 +8,7 @@
 import UIKit
 
 struct NotificationViewModel {
-    //MARK: -Properties
+    // MARK: - Properties
     private let notification: Notification
     private let type: NotificationType
     private let user: User
@@ -55,11 +55,10 @@ struct NotificationViewModel {
             formatter.maximumUnitCount = 1
             formatter.unitsStyle = .abbreviated
             let now = Date()
-            
             return formatter.string(from: notification.timestamp, to: now) ?? "2m"
     }
 
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(notification: Notification) {
         self.notification = notification
         self.type = notification.type

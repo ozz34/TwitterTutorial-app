@@ -7,10 +7,10 @@
 
 import UIKit
 
-class RegistrationController: UIViewController {
-    //MARK: -Properties
-    private let imagePicker = UIImagePickerController()
+final class RegistrationController: UIViewController {
+    // MARK: - Properties
     private var profileImage: UIImage?
+    private let imagePicker = UIImagePickerController()
     
     private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -20,7 +20,6 @@ class RegistrationController: UIViewController {
         button.addTarget(self,
                          action: #selector(handleAddProfilePhoto),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -54,26 +53,22 @@ class RegistrationController: UIViewController {
 
     private let emailTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Email")
-        
         return tf
     }()
     
     private let passwordTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Password")
         tf.isSecureTextEntry = true
-        
         return tf
     }()
     
     private let fullNameTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "Full Name")
-        
         return tf
     }()
     
     private let userNameTextField: UITextField = {
         let tf = Utilities().createTextField(withPlaceholder: "User Name")
-        
         return tf
     }()
     
@@ -88,28 +83,24 @@ class RegistrationController: UIViewController {
         button.addTarget(self,
                          action: #selector(handleRegistration),
                          for: .touchUpInside)
-        
         return button
     }()
-    
     
     private lazy var alreadyHaveAccountButton: UIButton = {
         let button = Utilities().createAttributeButton("Already have an account? ", "Log In")
         button.addTarget(self,
                          action: #selector(handleShowLogin),
                          for: .touchUpInside)
-       
         return button
     }()
     
-
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleShowLogin() {
         navigationController?.popViewController(animated: true)
     }
@@ -119,7 +110,6 @@ class RegistrationController: UIViewController {
             print("Debug: Please select a profile image")
             return
         }
-        
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
@@ -131,12 +121,11 @@ class RegistrationController: UIViewController {
                                              userName: userName,
                                              profileImage: profileImage)
         
-        AuthService.shared.registerUser(credentials: authCredential) {(error, ref) in
+        AuthService.shared.registerUser(credentials: authCredential) { [weak self] (error, ref) in
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             guard let tab = windowScene.windows.first?.rootViewController as? MainTabController else { return }
             tab.autenticateUserAndConfigureUI()
-            
-           self.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -144,7 +133,7 @@ class RegistrationController: UIViewController {
         present(imagePicker, animated: true)
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .twitterBlue
         
@@ -152,7 +141,8 @@ class RegistrationController: UIViewController {
         imagePicker.allowsEditing = true
         
         view.addSubview(plusPhotoButton)
-        plusPhotoButton.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
+        plusPhotoButton.centerX(inView: view,
+                                topAnchor: view.safeAreaLayoutGuide.topAnchor)
         plusPhotoButton.setDimensions(width: 128, height: 128)
         
         let stack = UIStackView(arrangedSubviews: [emailContainerView,
@@ -180,22 +170,22 @@ class RegistrationController: UIViewController {
     }
 }
 
-//MARK: - UIImagePickerControllerDelegate
+// MARK: - UIImagePickerControllerDelegate
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
         self.profileImage = profileImage
         
-        plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal),
+                                 for: .normal)
         plusPhotoButton.layer.cornerRadius = 128/2
         plusPhotoButton.layer.masksToBounds = true
         plusPhotoButton.clipsToBounds = true
         plusPhotoButton.contentMode = .scaleAspectFill
         plusPhotoButton.layer.borderColor = UIColor.white.cgColor
         plusPhotoButton.layer.borderWidth = 3
-        
+
         dismiss(animated: true)
     }
 }

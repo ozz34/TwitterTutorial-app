@@ -7,19 +7,17 @@
 
 import UIKit
 
-//TODO: configure controller
-class ConversationsController: UIViewController {
-    //MARK: -Lyfecycle
+// TODO: Configure controller
+final class ConversationsController: UIViewController {
+    // MARK: -Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
     }
    
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = "Messages"
     }
 }
-

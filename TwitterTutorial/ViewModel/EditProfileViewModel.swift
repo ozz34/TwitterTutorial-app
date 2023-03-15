@@ -25,9 +25,9 @@ enum EditProfileOptions: Int, CaseIterable {
 }
 
 struct EditProfileViewModel {
-    //MARK: -Properties
-    private let user: User
+    // MARK: - Properties
     let option: EditProfileOptions
+    private let user: User
     
     var titleText: String {
         option.description
@@ -56,7 +56,7 @@ struct EditProfileViewModel {
         user.bio != nil
     }
     
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     init(user: User, option: EditProfileOptions) {
         self.user = user
         self.option = option

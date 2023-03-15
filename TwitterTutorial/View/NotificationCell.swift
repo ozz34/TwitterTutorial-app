@@ -7,17 +7,16 @@
 
 import UIKit
 
+// MARK: - NotificationCellDelegate
 protocol NotificationCellDelegate: AnyObject {
     func didTapProfileImage(_ cell: NotificationCell)
     func didTapFollow(_ cell: NotificationCell)
 }
 
-class NotificationCell: UITableViewCell {
-    //MARK: -Properties
+final class NotificationCell: UITableViewCell {
+    // MARK: - Properties
     var notification: Notification? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     
     weak var delegate: NotificationCellDelegate?
@@ -34,7 +33,6 @@ class NotificationCell: UITableViewCell {
                                          action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
-        
         return iv
     }()
     
@@ -48,7 +46,6 @@ class NotificationCell: UITableViewCell {
         button.addTarget(self,
                          action: #selector(handleFollowTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -56,15 +53,15 @@ class NotificationCell: UITableViewCell {
        let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14)
-
         return label
     }()
 
-    //MARK: -Lyfecycle
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let stack = UIStackView(arrangedSubviews: [profileImageView, notificationLabel])
+        let stack = UIStackView(arrangedSubviews: [profileImageView,
+                                                   notificationLabel])
         stack.axis = .horizontal
         stack.spacing = 8
         stack.alignment = .center
@@ -87,7 +84,7 @@ class NotificationCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleProfileImageTapped() {
         delegate?.didTapProfileImage(self)
     }
@@ -96,7 +93,7 @@ class NotificationCell: UITableViewCell {
         delegate?.didTapFollow(self)
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         guard let notification else { return }
         let viewModel = NotificationViewModel(notification: notification)
@@ -108,5 +105,3 @@ class NotificationCell: UITableViewCell {
         followButton.setTitle(viewModel.followButtonText, for: .normal)
     }
 }
-
-

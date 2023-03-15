@@ -7,23 +7,21 @@
 
 import UIKit
 
+// MARK: - EditProfileCellDelegate
 protocol EditProfileCellDelegate: AnyObject {
     func updateUserInfo(_ cell: EditProfileCell)
 }
 
-class EditProfileCell: UITableViewCell {
-    //MARK: -Properties
+final class EditProfileCell: UITableViewCell {
+    // MARK: - Properties
     var viewModel: EditProfileViewModel? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     weak var delegate: EditProfileCellDelegate?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-
         return label
     }()
     
@@ -36,7 +34,6 @@ class EditProfileCell: UITableViewCell {
         tf.addTarget(self,
                      action: #selector(handleUpdateUserInfo),
                      for: .editingDidEnd)
-        
         return tf
     }()
     
@@ -44,11 +41,10 @@ class EditProfileCell: UITableViewCell {
         let tv = InputTextView()
         tv.font = UIFont.systemFont(ofSize: 14)
         tv.textColor = .twitterBlue
-        
         return tv
     }()
 
-    //MARK: -Lyfecycle
+    // MARK: - Lyfecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -89,15 +85,15 @@ class EditProfileCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: -Selectors
+    // MARK: - Selectors
     @objc func handleUpdateUserInfo() {
         delegate?.updateUserInfo(self)
     }
 
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         guard let viewModel else { return }
-        
+
         bioTextView.isHidden = viewModel.shouldHideTextView
         titleLabel.text = viewModel.titleText
         

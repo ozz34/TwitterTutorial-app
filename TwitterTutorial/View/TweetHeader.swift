@@ -8,17 +8,16 @@
 import UIKit
 import ActiveLabel
 
+// MARK: - TweetHeaderDelegate
 protocol TweetHeaderDelegate: AnyObject {
     func showActionSheet()
     func handleFetchUser(withUserName username: String)
 }
 
-class TweetHeader: UICollectionReusableView {
-    //MARK: -Properties
+final class TweetHeader: UICollectionReusableView {
+    // MARK: - Properties
     var tweet: Tweet? {
-        didSet {
-            configure()
-        }
+        didSet { configure() }
     }
     
     weak var delegate: TweetHeaderDelegate?
@@ -35,7 +34,6 @@ class TweetHeader: UICollectionReusableView {
                                          action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
-        
         return iv
     }()
     
@@ -49,7 +47,6 @@ class TweetHeader: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        
         return label
     }()
     
@@ -59,7 +56,6 @@ class TweetHeader: UICollectionReusableView {
         label.numberOfLines = 0
         label.mentionColor = .twitterBlue
         label.hashtagColor = .twitterBlue
-        
         return label
     }()
     
@@ -68,7 +64,6 @@ class TweetHeader: UICollectionReusableView {
         label.textColor = .lightGray
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textAlignment = .left
-        
         return label
     }()
     
@@ -79,7 +74,6 @@ class TweetHeader: UICollectionReusableView {
         button.addTarget(self,
                          action: #selector(showActionSheet),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -114,11 +108,10 @@ class TweetHeader: UICollectionReusableView {
         stack.centerY(inView: view,
                       leftAnchor: view.leftAnchor,
                       paddingLeft: 16)
-        
         return view
     }()
     
-    private lazy var replyLabel: ActiveLabel = {
+    private let replyLabel: ActiveLabel = {
        let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 26)
@@ -135,7 +128,6 @@ class TweetHeader: UICollectionReusableView {
         button.addTarget(self,
                          action: #selector(handleCommentTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -144,25 +136,26 @@ class TweetHeader: UICollectionReusableView {
         button.addTarget(self,
                          action: #selector(handleRetweetTapped),
                          for: .touchUpInside)
-        
         return button
     }()
     
     private lazy var likeButton: UIButton = {
       let button = createButton(withImageName: "like")
-        button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
-        
+        button.addTarget(self,
+                         action: #selector(handleLikeTapped),
+                         for: .touchUpInside)
         return button
     }()
     
     private lazy var shareButton: UIButton = {
       let button = createButton(withImageName: "share")
-        button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
-        
+        button.addTarget(self,
+                         action: #selector(handleShareTapped),
+                         for: .touchUpInside)
         return button
     }()
     
-    //MARK: -Lyfecycle
+    // MARK: - Lyfecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -229,8 +222,8 @@ class TweetHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //TODO - create actions tweet
-    //MARK: -Selectors
+    // TODO: - Create actions tweet
+    // MARK: - Selectors
     @objc func handleProfileImageTapped() {
     }
     
@@ -254,7 +247,7 @@ class TweetHeader: UICollectionReusableView {
         print("Share")
     }
     
-    //MARK: -Helpers
+    // MARK: - Helpers
     private func configure() {
         guard let tweet else { return }
         let viewModel = TweetViewModel(tweet: tweet)
@@ -293,4 +286,3 @@ class TweetHeader: UICollectionReusableView {
         }
     }
 }
-

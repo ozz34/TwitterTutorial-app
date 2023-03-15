@@ -7,13 +7,13 @@
 
 import Firebase
 
-class NotificationService {
-    //MARK: -Properties, Lyfecycle
+final class NotificationService {
+    // MARK: - Properties, Lifecycle
     static let shared = NotificationService()
     
     private init() {}
     
-    //MARK: -Helpers
+    // MARK: - Upload
     func uploadNotification(toUser user: User,
                             type: NotificationType,
                             tweetID: String? = nil) {
@@ -28,7 +28,8 @@ class NotificationService {
         }
         REF_NOTIFICATIONS.child(user.uid).childByAutoId().updateChildValues(values)
     }
-        
+    
+    // MARK: - Fetch
     func fetchNotifications(completion: @escaping([Notification])-> Void) {
         let notifications = [Notification]()
         guard let uid = Auth.auth().currentUser?.uid else { return }
