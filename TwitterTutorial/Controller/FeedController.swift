@@ -8,7 +8,7 @@
 import UIKit
 
 final class FeedController: UICollectionViewController {
-    //MARK: - Properties
+    // MARK: - Properties
     var user: User? {
         didSet { configureLeftBarButton() }
     }
@@ -21,7 +21,7 @@ final class FeedController: UICollectionViewController {
         }
     }
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -34,7 +34,7 @@ final class FeedController: UICollectionViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    //MARK: - API
+    // MARK: - API
     func fetchTweets() {
         collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweets { [weak self] tweets in
@@ -45,7 +45,7 @@ final class FeedController: UICollectionViewController {
     }
     
     private func checkIfUserLikedTweets() {
-        self.tweets.forEach { tweet in
+        tweets.forEach { tweet in
             TweetService.shared.checkIsUserLikedTweet(tweet: tweet) { [weak self] didLike in
                 guard didLike == true else { return }
                
@@ -56,7 +56,7 @@ final class FeedController: UICollectionViewController {
         }
     }
     
-    //MARK: - Selectors
+    // MARK: - Selectors
     @objc func handleRefresh() {
         fetchTweets()
     }
@@ -67,7 +67,7 @@ final class FeedController: UICollectionViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     private func configureUI() {
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: identifier)
         
@@ -88,7 +88,7 @@ final class FeedController: UICollectionViewController {
         
         let profileImageView = UIImageView()
         profileImageView.setDimensions(width: 32, height: 32)
-        profileImageView.layer.cornerRadius = 32/2
+        profileImageView.layer.cornerRadius = 32 / 2
         profileImageView.layer.masksToBounds = true
         profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
         
@@ -101,31 +101,34 @@ final class FeedController: UICollectionViewController {
     }
 }
 
-//MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension FeedController {
     override func collectionView(_ collectionView: UICollectionView,
-                                 numberOfItemsInSection section: Int) -> Int {
+                                 numberOfItemsInSection section: Int) -> Int
+    {
         tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
-                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell()}
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? TweetCell else { return UICollectionViewCell() }
         cell.delegate = self
         let tweet = tweets[indexPath.row]
         cell.tweet = tweet
         return cell
     }
 
-//MARK: - UICollectionViewDelegate
+    // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView,
-                                 didSelectItemAt indexPath: IndexPath) {
+                                 didSelectItemAt indexPath: IndexPath)
+    {
         let controller = TweetController(tweet: tweets[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = TweetViewModel(tweet: tweets[indexPath.row])
@@ -140,7 +143,7 @@ extension FeedController: TweetCellDelegate {
     func handleLikeTapped(_ cell: TweetCell) {
         guard let tweet = cell.tweet else { return }
         
-        TweetService.shared.likeTweet(tweet: tweet) { err, ref in
+        TweetService.shared.likeTweet(tweet: tweet) { _, _ in
             cell.tweet?.didLike.toggle()
             
             let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
@@ -169,7 +172,7 @@ extension FeedController: TweetCellDelegate {
     
     func handleFetchUserFromFeedController(withUserName userName: String) {
         UserService.shared.fetchUser(withUsername: userName) { [weak self] user in
-           let controller = ProfileController(user: user)
+            let controller = ProfileController(user: user)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }

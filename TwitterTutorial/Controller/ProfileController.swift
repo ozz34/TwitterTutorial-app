@@ -5,8 +5,8 @@
 //  Created by Иван Худяков on 30.01.2023.
 //
 
-import UIKit
 import Firebase
+import UIKit
 
 final class ProfileController: UICollectionViewController {
     // MARK: - Properties
@@ -61,7 +61,7 @@ final class ProfileController: UICollectionViewController {
     }
     
     // MARK: - API
-   private func fetchTweets() {
+    private func fetchTweets() {
         TweetService.shared.fetchTweets(forUser: user) { [weak self] tweets in
             self?.tweets = tweets
             self?.collectionView.reloadData()
@@ -81,7 +81,7 @@ final class ProfileController: UICollectionViewController {
     }
     
     private func checkIfUserIsFollowed() {
-        UserService.shared.checkUserIsFollowed(uid: user.uid) { [weak self] isFollowed  in
+        UserService.shared.checkUserIsFollowed(uid: user.uid) { [weak self] isFollowed in
             self?.user.isFollowed = isFollowed
             self?.collectionView.reloadData()
         }
@@ -123,11 +123,12 @@ extension ProfileController {
         return cell
     }
 }
+
 // MARK: - UICollectionViewDelegate
 extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath)
-                as? ProfileHeader else { return UICollectionReusableView() }
+            as? ProfileHeader else { return UICollectionReusableView() }
         header.user = user
         header.delegate = self
         return header
@@ -165,7 +166,7 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 // MARK: - ProfileHeaderDelegate
 extension ProfileController: ProfileHeaderDelegate {
     func didSelect(filter: ProfileFilterOptions) {
-        self.selectedFilter = filter
+        selectedFilter = filter
     }
     
     func handleEditProfileFollow() {
@@ -179,7 +180,7 @@ extension ProfileController: ProfileHeaderDelegate {
         }
         
         if user.isFollowed {
-            UserService.shared.unfollowUser(uid: user.uid) { ref, err in
+            UserService.shared.unfollowUser(uid: user.uid) { _, _ in
                 self.user.isFollowed = false
                 self.user.stats?.followers -= 1
                 self.collectionView.reloadData()
@@ -187,7 +188,7 @@ extension ProfileController: ProfileHeaderDelegate {
                 NotificationService.shared.uploadNotification(toUser: self.user, type: .unfollow)
             }
         } else {
-            UserService.shared.followUser(uid: user.uid) { ref, err in
+            UserService.shared.followUser(uid: user.uid) { _, _ in
                 self.user.isFollowed = true
                 self.user.stats?.followers += 1
                 self.collectionView.reloadData()
@@ -209,16 +210,16 @@ extension ProfileController: EditProfileControllerDelegate {
             try Auth.auth().signOut()
             let nav = UINavigationController(rootViewController: LoginController())
             nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
-            } catch let error {
-                print("Error: \(error.localizedDescription)")
-            }
+            present(nav, animated: true)
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
     }
     
     func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
         controller.dismiss(animated: true)
         self.user = user
-        self.collectionView.reloadData()
+        collectionView.reloadData()
     }
 }
 

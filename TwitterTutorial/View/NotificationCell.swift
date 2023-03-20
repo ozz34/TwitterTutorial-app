@@ -50,7 +50,7 @@ final class NotificationCell: UITableViewCell {
     }()
     
     private let notificationLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14)
         return label
@@ -66,7 +66,7 @@ final class NotificationCell: UITableViewCell {
         stack.spacing = 8
         stack.alignment = .center
         
-        self.contentView.addSubview(stack)
+        contentView.addSubview(stack)
         stack.centerY(inView: self,
                       leftAnchor: leftAnchor,
                       paddingLeft: 12)

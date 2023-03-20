@@ -7,17 +7,16 @@
 
 import Firebase
 
-typealias DatabaseCompletion = (Error?, DatabaseReference)-> Void
+typealias DatabaseCompletion = (Error?, DatabaseReference) -> Void
 
 final class UserService {
-    //MARK: -Properties, Lifecycle
+    // MARK: - Properties, Lifecycle
     static let shared = UserService()
     
     private init() {}
     
     // MARK: - Fetch
-    func fetchUser(uid: String, completion: @escaping(User)-> Void) {
-
+    func fetchUser(uid: String, completion: @escaping (User) -> Void) {
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             let user = User(dictionary: dictionary, uid: uid)
@@ -39,7 +38,6 @@ final class UserService {
     }
     
     func fetchUserStats(uid: String, completion: @escaping (UserRelationStats) -> Void) {
-        
         REF_USER_FOLLOWERS.child(uid).observeSingleEvent(of: .value) { snapshot in
             let followers = snapshot.children.allObjects.count
            
@@ -52,7 +50,7 @@ final class UserService {
         }
     }
     
-    func fetchUser(withUsername username: String, completion: @escaping(User)-> Void) {
+    func fetchUser(withUsername username: String, completion: @escaping (User) -> Void) {
         REF_USER_USERNAMES.child(username).observeSingleEvent(of: .value) { snapshot in
             guard let uid = snapshot.value as? String else { return }
             self.fetchUser(uid: uid, completion: completion)
@@ -63,7 +61,7 @@ final class UserService {
     func followUser(uid: String, completion: @escaping DatabaseCompletion) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        REF_USER_FOLLOWING.child(currentUid).updateChildValues([uid: 1]) { (err, ref) in
+        REF_USER_FOLLOWING.child(currentUid).updateChildValues([uid: 1]) { _, _ in
             REF_USER_FOLLOWERS.child(uid).updateChildValues([currentUid: 1], withCompletionBlock: completion)
         }
     }
@@ -71,7 +69,7 @@ final class UserService {
     func unfollowUser(uid: String, completion: @escaping DatabaseCompletion) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        REF_USER_FOLLOWING.child(currentUid).child(uid).removeValue { (err, ref) in
+        REF_USER_FOLLOWING.child(currentUid).child(uid).removeValue { _, _ in
             REF_USER_FOLLOWERS.child(uid).child(currentUid).removeValue(completionBlock: completion)
         }
     }
@@ -92,21 +90,21 @@ final class UserService {
                       "username": user.userName,
                       "bio": user.bio ?? ""]
         
-        REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)  
+        REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)
     }
     
-    func updateProfileImage(image: UIImage, completion: @escaping(URL?)-> Void) {
+    func updateProfileImage(image: UIImage, completion: @escaping (URL?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.3) else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let fileName = NSUUID().uuidString
         let ref = STORAGE_PROFILE_IMAGES.child(fileName)
         
-        ref.putData(imageData) { meta, err in
-            ref.downloadURL { url, err in
+        ref.putData(imageData) { _, _ in
+            ref.downloadURL { url, _ in
                 guard let profileImageUrl = url?.absoluteString else { return }
                 
                 let values = ["profileImageUrl": profileImageUrl]
-                REF_USERS.child(uid).updateChildValues(values) { err, ref in
+                REF_USERS.child(uid).updateChildValues(values) { _, _ in
                     completion(url)
                 }
             }

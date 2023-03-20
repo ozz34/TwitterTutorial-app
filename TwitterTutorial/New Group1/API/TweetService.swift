@@ -8,7 +8,7 @@
 import Firebase
 
 final class TweetService {
-    // MARK: -Properties, Lifecycle
+    // MARK: - Properties, Lifecycle
     static let shared = TweetService()
     
     private init() {}
@@ -25,26 +25,26 @@ final class TweetService {
                                      "caption": caption]
         switch type {
         case .tweet:
-            REF_TWEETS.childByAutoId().updateChildValues(values) { error, ref in
-                //update user-tweet structure after tweet upload completes
+            REF_TWEETS.childByAutoId().updateChildValues(values) { _, ref in
+                // update user-tweet structure after tweet upload completes
                 guard let tweetID = ref.key else { return }
-                REF_USER_TWEETS.child(uid).updateChildValues([tweetID:1], withCompletionBlock: completion)
+                REF_USER_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
             }
        
         case .reply(let tweet):
             values["replyingTo"] = tweet.user.userName
             
             REF_TWEET_REPLIES.child(tweet.tweetId).childByAutoId()
-                .updateChildValues(values) { err, ref in
+                .updateChildValues(values) { _, ref in
                     guard let replyKey = ref.key else { return }
                     
                     REF_USER_REPLIES.child(uid).updateChildValues([tweet.tweetId: replyKey], withCompletionBlock: completion)
-            }
+                }
         }
     }
     
     // MARK: - Fetch
-    func fetchTweets(completion: @escaping([Tweet])-> Void) {
+    func fetchTweets(completion: @escaping ([Tweet]) -> Void) {
         var tweets = [Tweet]()
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
@@ -75,7 +75,7 @@ final class TweetService {
         }
     }
     
-    func fetchTweets(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+    func fetchTweets(forUser user: User, completion: @escaping ([Tweet]) -> Void) {
         var tweets = [Tweet]()
         
         REF_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
@@ -100,7 +100,7 @@ final class TweetService {
         }
     }
    
-    func fetchReplies(forUser user: User, completion: @escaping([Tweet])-> Void) {
+    func fetchReplies(forUser user: User, completion: @escaping ([Tweet]) -> Void) {
         var replies = [Tweet]()
         
         REF_USER_REPLIES.child(user.uid).observe(.childAdded) { snapshot in
@@ -121,7 +121,7 @@ final class TweetService {
         }
     }
     
-    func fetchReplies(forTweet tweet: Tweet, completion: @escaping([Tweet])-> Void) {
+    func fetchReplies(forTweet tweet: Tweet, completion: @escaping ([Tweet]) -> Void) {
         var tweets = [Tweet]()
         
         REF_TWEET_REPLIES.child(tweet.tweetId).observe(.childAdded) { snapshot in
@@ -138,7 +138,7 @@ final class TweetService {
         }
     }
     
-    func fetchLikes(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+    func fetchLikes(forUser user: User, completion: @escaping ([Tweet]) -> Void) {
         var tweets = [Tweet]()
         
         REF_USER_LIKES.child(user.uid).observe(.childAdded) { snapshot in
@@ -162,20 +162,20 @@ final class TweetService {
         REF_TWEETS.child(tweet.tweetId).child("likes").setValue(likes)
         
         if tweet.didLike {
-            REF_USER_LIKES.child(uid).child(tweet.tweetId).removeValue { err, ref in
+            REF_USER_LIKES.child(uid).child(tweet.tweetId).removeValue { _, _ in
                 REF_TWEET_LIKES.child(tweet.tweetId).child(uid).removeValue(completionBlock: completion)
             }
         } else {
-            REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId:1]) { err, ref in
+            REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetId: 1]) { _, _ in
                 REF_TWEET_LIKES.child(tweet.tweetId).updateChildValues([uid: 1], withCompletionBlock: completion)
             }
         }
     }
     
-    func checkIsUserLikedTweet(tweet: Tweet, completion: @escaping(Bool) -> Void) {
+    func checkIsUserLikedTweet(tweet: Tweet, completion: @escaping (Bool) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        REF_USER_LIKES.child(uid).child(tweet.tweetId).observeSingleEvent(of: .value) {snapshot in
+        REF_USER_LIKES.child(uid).child(tweet.tweetId).observeSingleEvent(of: .value) { snapshot in
             completion(snapshot.exists())
         }
     }

@@ -17,6 +17,7 @@ final class EditProfileCell: UITableViewCell {
     var viewModel: EditProfileViewModel? {
         didSet { configure() }
     }
+
     weak var delegate: EditProfileCellDelegate?
     
     private let titleLabel: UILabel = {
@@ -26,7 +27,7 @@ final class EditProfileCell: UITableViewCell {
     }()
     
     lazy var infoTextField: UITextField = {
-       let tf = UITextField()
+        let tf = UITextField()
         tf.borderStyle = .none
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.textAlignment = .left

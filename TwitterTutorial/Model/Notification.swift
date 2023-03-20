@@ -22,18 +22,18 @@ struct Notification {
     var user: User
     var tweet: Tweet?
     var type: NotificationType!
-    
+
     init(user: User, dictionary: [String: Any]) {
         self.user = user
-        
+
         if let tweetId = dictionary["tweetID"] as? String {
             self.tweetId = tweetId
         }
-        
+
         if let timestamp = dictionary["timestamp"] as? Double {
             self.timestamp = Date(timeIntervalSince1970: timestamp)
         }
-        
+
         if let type = dictionary["type"] as? Int {
             self.type = NotificationType(rawValue: type)
         }

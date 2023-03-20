@@ -34,11 +34,11 @@ final class ActionSheetLauncher: NSObject {
     }()
 
     private lazy var footerView: UIView = {
-       let view = UIView()
+        let view = UIView()
         
         view.addSubview(cancelButton)
         cancelButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        cancelButton.anchor(left:view.leftAnchor,
+        cancelButton.anchor(left: view.leftAnchor,
                             right: view.rightAnchor,
                             paddingLeft: 12,
                             paddingRight: 12)
@@ -81,7 +81,8 @@ final class ActionSheetLauncher: NSObject {
     }
     
     func show() {
-        guard let window = UIApplication.shared.connectedScenes.compactMap({($0 as? UIWindowScene)?.keyWindow }).first else { return }
+        guard let window = UIApplication.shared.connectedScenes
+                           .compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first else { return }
         self.window = window
         window.makeKeyAndVisible()
         
@@ -90,7 +91,7 @@ final class ActionSheetLauncher: NSObject {
 
         window.addSubview(tableView)
         let height = CGFloat(viewModel.options.count * 60) + 100
-        self.tableViewHeight = height
+        tableViewHeight = height
         tableView.frame = CGRect(x: 0,
                                  y: window.frame.height,
                                  width: window.frame.width,
@@ -114,6 +115,7 @@ final class ActionSheetLauncher: NSObject {
         tableView.register(ActionSheetCell.self, forCellReuseIdentifier: identifier)
     }
 }
+
 // MARK: - UITableViewDataSource
 extension ActionSheetLauncher: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
@@ -124,7 +126,7 @@ extension ActionSheetLauncher: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ActionSheetCell
-        else { return UITableViewCell()}
+        else { return UITableViewCell() }
         cell.option = viewModel.options[indexPath.row]
         return cell
     }

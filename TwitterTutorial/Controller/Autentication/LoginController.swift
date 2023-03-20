@@ -10,7 +10,7 @@ import UIKit
 final class LoginController: UIViewController {
     // MARK: - Properties
     private let logoImageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "TwitterLogo")
@@ -64,7 +64,6 @@ final class LoginController: UIViewController {
         return button
     }()
     
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +80,7 @@ final class LoginController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
-        AuthService.shared.logUserIn(withEmail: email, password: password) { [weak self] (result, error) in
+        AuthService.shared.logUserIn(withEmail: email, password: password) { [weak self] _, error in
             if let error = error {
                 print("DEBUG: Error logging in \(error.localizedDescription)")
                 return

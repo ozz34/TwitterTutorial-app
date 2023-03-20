@@ -5,7 +5,6 @@
 //  Created by Иван Худяков on 12.01.2023.
 //
 
-
 import UIKit
 
 enum SearchControllerConfiguration {
@@ -56,19 +55,19 @@ final class SearchController: UITableViewController {
         searchController.searchBar.text = ""
     }
     
-    //MARK: - API
+    // MARK: - API
     private func fetchUsers() {
         UserService.shared.fetchUsers { [weak self] users in
             self?.users = users
         }
     }
     
-    //MARK: - Selectors
+    // MARK: - Selectors
     @objc func handleDismissal() {
         dismiss(animated: true)
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
         navigationItem.title = config == .messages ? "New message" : "Explore"
@@ -93,7 +92,7 @@ final class SearchController: UITableViewController {
     }
 }
 
-//MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension SearchController {
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
@@ -103,8 +102,9 @@ extension SearchController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? UserCell else { return
-            UITableViewCell() }
-        let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+            UITableViewCell()
+        }
+        let user = isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
         cell.user = user
         return cell
     }
@@ -114,7 +114,7 @@ extension SearchController {
 extension SearchController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
-        let user =  isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+        let user = isSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -124,6 +124,6 @@ extension SearchController {
 extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }
-        filteredUsers = users.filter({ $0.userName.contains(searchText)})
+        filteredUsers = users.filter { $0.userName.contains(searchText) }
     }
 }

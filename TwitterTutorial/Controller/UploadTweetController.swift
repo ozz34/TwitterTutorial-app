@@ -5,9 +5,9 @@
 //  Created by Иван Худяков on 24.01.2023.
 //
 
-import UIKit
-import SDWebImage
 import ActiveLabel
+import SDWebImage
+import UIKit
 
 final class UploadTweetController: UIViewController {
     // MARK: - Properties
@@ -44,7 +44,7 @@ final class UploadTweetController: UIViewController {
     private let captionTextView = InputTextView()
     
     private lazy var replyLabel: ActiveLabel = {
-       let label = ActiveLabel()
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
         label.mentionColor = .twitterBlue
@@ -82,7 +82,7 @@ final class UploadTweetController: UIViewController {
     
     @objc func handleUploadTweet() {
         guard let caption = captionTextView.text else { return }
-        TweetService.shared.uploadTweet(caption: caption, type: config) { [weak self] error, ref in
+        TweetService.shared.uploadTweet(caption: caption, type: config) { [weak self] error, _ in
             if let error {
                 print("Debug: Failed to upload tweet with error: \(error.localizedDescription)")
                 return
@@ -138,7 +138,7 @@ final class UploadTweetController: UIViewController {
     }
     
     private func configureMentionHandler() {
-        replyLabel.handleMentionTap { mention in
+        replyLabel.handleMentionTap { _ in
             let controller = ProfileController(user: self.user)
             self.navigationController?.pushViewController(controller, animated: true)
         }

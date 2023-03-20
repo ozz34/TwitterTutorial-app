@@ -7,19 +7,19 @@
 
 import UIKit
 
-//MARK: - ProfileFilterViewDelegate
+// MARK: - ProfileFilterViewDelegate
 protocol ProfileFilterViewDelegate: AnyObject {
     func filterView(_ view: ProfileFilterView, didSelect index: Int)
 }
 
 final class ProfileFilterView: UIView {
-    //MARK: - Properties
+    // MARK: - Properties
     weak var delegate: ProfileFilterViewDelegate?
     
     private let identifier = "ProfileFilterCell"
     
     private lazy var collectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: layout)
         cv.backgroundColor = .white
@@ -34,7 +34,7 @@ final class ProfileFilterView: UIView {
         return view
     }()
     
-    //MARK: - Lyfecycle
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -54,7 +54,7 @@ final class ProfileFilterView: UIView {
         addSubview(underLineView)
         underLineView.anchor(left: leftAnchor,
                              bottom: bottomAnchor,
-                             width:  frame.width / 3,
+                             width: frame.width / 3,
                              height: 2)
     }
     
@@ -63,10 +63,11 @@ final class ProfileFilterView: UIView {
     }
 }
 
-//MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension ProfileFilterView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
+                        numberOfItemsInSection section: Int) -> Int
+    {
         return ProfileFilterOptions.allCases.count
     }
     
@@ -80,7 +81,7 @@ extension ProfileFilterView: UICollectionViewDataSource {
     }
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 extension ProfileFilterView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -97,7 +98,7 @@ extension ProfileFilterView: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 extension ProfileFilterView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)

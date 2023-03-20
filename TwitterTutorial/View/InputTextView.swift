@@ -36,6 +36,7 @@ final class InputTextView: UITextView {
                                                name: UITextView.textDidChangeNotification,
                                                object: nil)
     }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

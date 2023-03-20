@@ -21,11 +21,11 @@ final class AuthService {
     
     private init() {}
     
-    func logUserIn(withEmail email: String, password: String, completion: @escaping ((AuthDataResult?, Error?)-> Void)) {
+    func logUserIn(withEmail email: String, password: String, completion: @escaping ((AuthDataResult?, Error?) -> Void)) {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
-    func registerUser(credentials: AuthCredentials, completion: @escaping(Error?, DatabaseReference) -> Void) {
+    func registerUser(credentials: AuthCredentials, completion: @escaping (Error?, DatabaseReference) -> Void) {
         let eMail = credentials.email
         let password = credentials.password
         let fullName = credentials.fullName
@@ -36,8 +36,8 @@ final class AuthService {
         let fileName = NSUUID().uuidString
         let storageRef = STORAGE_PROFILE_IMAGES.child(fileName)
         
-        storageRef.putData(imageData, metadata: nil) { meta, error in
-            storageRef.downloadURL { (url, error) in
+        storageRef.putData(imageData, metadata: nil) { _, error in
+            storageRef.downloadURL { url, error in
                 guard let profileImageUrl = url?.absoluteString else { return }
                 
                 Auth.auth().createUser(withEmail: eMail, password: password) { result, error in

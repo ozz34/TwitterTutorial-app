@@ -15,7 +15,7 @@ enum EditProfileOptions: Int, CaseIterable {
     var description: String {
         switch self {
         case .fullName:
-           return "Name"
+            return "Name"
         case .userName:
             return "Username"
         case .bio:

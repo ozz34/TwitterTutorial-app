@@ -25,15 +25,15 @@ struct NotificationViewModel {
     }
     
     var notificationText: NSAttributedString? {
-        guard let timestamp = timestampString else { return nil}
+        guard let timestamp = timestampString else { return nil }
         let attributedText = NSMutableAttributedString(string: user.userName,
-                                              attributes: [.font: UIFont.boldSystemFont(ofSize: 12)])
+                                                       attributes: [.font: UIFont.boldSystemFont(ofSize: 12)])
         
         attributedText.append(NSAttributedString(string: notificationMessage,
-                                        attributes: [.font: UIFont.systemFont(ofSize: 12)]))
+                                                 attributes: [.font: UIFont.systemFont(ofSize: 12)]))
         attributedText.append(NSAttributedString(string: "  \(timestamp)",
-                                        attributes: [.font: UIFont.systemFont(ofSize: 12),
-                                                     .foregroundColor: UIColor.lightGray]))
+                                                 attributes: [.font: UIFont.systemFont(ofSize: 12),
+                                                              .foregroundColor: UIColor.lightGray]))
         return attributedText
     }
     
@@ -50,12 +50,12 @@ struct NotificationViewModel {
     }
     
     private var timestampString: String? {
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
-            formatter.maximumUnitCount = 1
-            formatter.unitsStyle = .abbreviated
-            let now = Date()
-            return formatter.string(from: notification.timestamp, to: now) ?? "2m"
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .abbreviated
+        let now = Date()
+        return formatter.string(from: notification.timestamp, to: now) ?? "2m"
     }
 
     // MARK: - Lifecycle

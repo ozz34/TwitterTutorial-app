@@ -30,7 +30,7 @@ final class NotificationService {
     }
     
     // MARK: - Fetch
-    func fetchNotifications(completion: @escaping([Notification])-> Void) {
+    func fetchNotifications(completion: @escaping ([Notification]) -> Void) {
         let notifications = [Notification]()
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -43,7 +43,7 @@ final class NotificationService {
         }
     }
     
-    fileprivate func getNotifications(uid: String, completion: @escaping([Notification]) -> Void) {
+    fileprivate func getNotifications(uid: String, completion: @escaping ([Notification]) -> Void) {
         var notifications = [Notification]()
         REF_NOTIFICATIONS.child(uid).observe(.childAdded) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }

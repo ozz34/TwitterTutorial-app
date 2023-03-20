@@ -8,7 +8,6 @@
 import UIKit
 
 final class Utilities {
-    
     func inputContainerView(with image: UIImage, textField: UITextField) -> UIView {
         let view = UIView()
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -40,12 +39,12 @@ final class Utilities {
     }
     
     func createTextField(withPlaceholder placeholder: String) -> UITextField {
-         let tf = UITextField()
-         tf.placeholder = placeholder
-         tf.textColor = .white
-         tf.font = UIFont.systemFont(ofSize: 16)
-         tf.attributedPlaceholder = NSAttributedString(string: placeholder,
-                                                       attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        let tf = UITextField()
+        tf.placeholder = placeholder
+        tf.textColor = .white
+        tf.font = UIFont.systemFont(ofSize: 16)
+        tf.attributedPlaceholder = NSAttributedString(string: placeholder,
+                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         return tf
     }
     
@@ -54,10 +53,10 @@ final class Utilities {
         
         let attributedTitle = NSMutableAttributedString(string: firstPart,
                                                         attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                                                                    NSAttributedString.Key.foregroundColor: UIColor.white])
+                                                                     NSAttributedString.Key.foregroundColor: UIColor.white])
         attributedTitle.append(NSAttributedString(string: secondPart,
                                                   attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                                                              NSAttributedString.Key.foregroundColor: UIColor.white]))
+                                                               NSAttributedString.Key.foregroundColor: UIColor.white]))
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }

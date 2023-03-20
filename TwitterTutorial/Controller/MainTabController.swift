@@ -5,8 +5,8 @@
 //  Created by Иван Худяков on 12.01.2023.
 //
 
-import UIKit
 import Firebase
+import UIKit
 
 enum ActionButtonConfiguration {
     case tweet
@@ -83,7 +83,7 @@ final class MainTabController: UITabBarController {
 
     // MARK: - Helpers
     private func configureUI() {
-        self.delegate = self
+        delegate = self
         
         view.addSubview(actionButton)
         actionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
@@ -92,11 +92,10 @@ final class MainTabController: UITabBarController {
                             paddingRight: 16,
                             width: 56,
                             height: 56)
-        actionButton.layer.cornerRadius = 56/2
+        actionButton.layer.cornerRadius = 56 / 2
     }
     
     private func configureViewControllers() {
-        
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(image: UIImage(named: "home_unselected") ?? UIImage(),
                                                 rootViewController: feed)
@@ -121,8 +120,8 @@ final class MainTabController: UITabBarController {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem.image = image
         nav.navigationBar.barTintColor = .white
-        //Custom bottom line functionality for another design
-        //nav.addCustomBottomLine()
+        // Custom bottom line functionality for another design
+        // nav.addCustomBottomLine()
         return nav
     }
 }
@@ -132,11 +131,12 @@ extension MainTabController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           didSelect viewController: UIViewController) {
         let index = viewControllers?.firstIndex(of: viewController)
-        let imageName = index == 3 ?  "mail" : "new_tweet"
+        let imageName = index == 3 ? "mail" : "new_tweet"
         actionButton.setImage(UIImage(named: imageName), for: .normal)
-        buttonConfig = index == 3 ? .message: .tweet
+        buttonConfig = index == 3 ? .message : .tweet
     }
 }
+
 // MARK: - UINavigationController
 extension UINavigationController {
     func addCustomBottomLine() {
@@ -144,11 +144,11 @@ extension UINavigationController {
         lineView.backgroundColor = .systemGroupedBackground
         
         navigationBar.addSubview(lineView)
-        lineView.anchor( left: navigationBar.leftAnchor,
-                         bottom: navigationBar.bottomAnchor,
-                         right: navigationBar.rightAnchor,
-                         paddingLeft: 8,
-                         paddingRight: 8,
-                         height: 1)
+        lineView.anchor(left: navigationBar.leftAnchor,
+                        bottom: navigationBar.bottomAnchor,
+                        right: navigationBar.rightAnchor,
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        height: 1)
     }
 }

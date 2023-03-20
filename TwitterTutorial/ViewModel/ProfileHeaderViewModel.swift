@@ -48,7 +48,7 @@ struct ProfileHeaderViewModel {
     }
     
     // MARK: - Lifecycle
-    init(user: User){
+    init(user: User) {
         self.user = user
         self.userNameText = "@" + user.userName
         self.fullNameText = user.fullName
@@ -61,8 +61,7 @@ struct ProfileHeaderViewModel {
                                                         attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedTitle.append(NSAttributedString(string: text,
                                                   attributes: [.font: UIFont.boldSystemFont(ofSize: 14),
-                                                               .foregroundColor: UIColor.lightGray]
-                                                 ))
+                                                               .foregroundColor: UIColor.lightGray]))
         return attributedTitle
     }
 }

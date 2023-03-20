@@ -27,7 +27,7 @@ final class NotificationsController: UITableViewController {
         navigationController?.navigationBar.barStyle = .default
     }
     
-    //MARK: - API
+    // MARK: - API
     private func fetchNotifications() {
         refreshControl?.beginRefreshing()
         
@@ -84,7 +84,7 @@ extension NotificationsController {
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NotificationCell else { return UITableViewCell()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
         cell.notification = notifications[indexPath.row]
         cell.delegate = self
         return cell
@@ -95,7 +95,6 @@ extension NotificationsController {
 extension NotificationsController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
-
         let notification = notifications[indexPath.row]
         guard let tweetId = notification.tweetId else { return }
         
@@ -112,13 +111,13 @@ extension NotificationsController: NotificationCellDelegate {
         guard let user = cell.notification?.user else { return }
         
         if user.isFollowed {
-            UserService.shared.unfollowUser(uid: user.uid) { err, ref in
+            UserService.shared.unfollowUser(uid: user.uid) { _, _ in
                 cell.notification?.user.isFollowed = false
                 
                 NotificationService.shared.uploadNotification(toUser: user, type: .unfollow)
             }
         } else {
-            UserService.shared.followUser(uid: user.uid) { err, ref in
+            UserService.shared.followUser(uid: user.uid) { _, _ in
                 cell.notification?.user.isFollowed = true
                 
                 NotificationService.shared.uploadNotification(toUser: user, type: .follow)

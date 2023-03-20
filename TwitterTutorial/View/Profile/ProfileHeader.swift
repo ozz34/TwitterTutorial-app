@@ -40,7 +40,7 @@ final class ProfileHeader: UICollectionReusableView {
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "baseline_arrow_back_white_24dp")?.withRenderingMode(.alwaysOriginal),
-                                for: .normal)
+                        for: .normal)
         button.addTarget(self,
                          action: #selector(handleDismissal),
                          for: .touchUpInside)
@@ -49,7 +49,7 @@ final class ProfileHeader: UICollectionReusableView {
     }()
     
     private let profileImageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 80 / 2
         iv.clipsToBounds = true
@@ -158,8 +158,8 @@ final class ProfileHeader: UICollectionReusableView {
         addSubview(filterBar)
         filterBar.anchor(left: leftAnchor,
                          bottom: bottomAnchor,
-                         right:  rightAnchor,
-                         height:  50)
+                         right: rightAnchor,
+                         height: 50)
         
         let followStack = UIStackView(arrangedSubviews: [followingLabel,
                                                          followersLabel])
@@ -172,7 +172,6 @@ final class ProfileHeader: UICollectionReusableView {
                            left: leftAnchor,
                            paddingTop: 8,
                            paddingLeft: 12)
-                          
     }
     
     required init?(coder: NSCoder) {
@@ -188,14 +187,11 @@ final class ProfileHeader: UICollectionReusableView {
         delegate?.handleEditProfileFollow()
     }
     
-    //TODO: create followers tap action
-    @objc func handleFollowersTapped() {
-        
-    }
-    //TODO: create following tap action
-    @objc func handleFollowingTapped() {
-        
-    }
+    // TODO: create followers tap action
+    @objc func handleFollowersTapped() {}
+
+    // TODO: create following tap action
+    @objc func handleFollowingTapped() {}
     
     // MARK: - Helpers
     private func configure() {

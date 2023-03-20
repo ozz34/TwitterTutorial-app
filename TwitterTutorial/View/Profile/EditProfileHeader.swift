@@ -19,7 +19,7 @@ final class EditProfileHeader: UIView {
     private let user: User
     
     let profileImageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

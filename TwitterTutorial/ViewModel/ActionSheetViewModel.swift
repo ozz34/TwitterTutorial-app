@@ -12,7 +12,7 @@ enum ActionSheetOptions {
     case unfollow(User)
     case report
     case delete
-    
+
     var description: String {
         switch self {
         case .follow(let user):
@@ -30,15 +30,15 @@ enum ActionSheetOptions {
 struct ActionSheetViewModel {
     // MARK: - Properties
     private let user: User
-    
+
     var options: [ActionSheetOptions] {
         var results = [ActionSheetOptions]()
-        
+
         if user.isCurrentUser {
             results.append(.delete)
         } else {
             let followOption: ActionSheetOptions = user.isFollowed ? .unfollow(user) :
-                                                                     .follow(user)
+                .follow(user)
             results.append(followOption)
         }
         results.append(.report)

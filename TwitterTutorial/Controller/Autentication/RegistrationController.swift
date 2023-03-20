@@ -121,7 +121,7 @@ final class RegistrationController: UIViewController {
                                              userName: userName,
                                              profileImage: profileImage)
         
-        AuthService.shared.registerUser(credentials: authCredential) { [weak self] (error, ref) in
+        AuthService.shared.registerUser(credentials: authCredential) { [weak self] _, _ in
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             guard let tab = windowScene.windows.first?.rootViewController as? MainTabController else { return }
             tab.autenticateUserAndConfigureUI()
@@ -160,26 +160,26 @@ final class RegistrationController: UIViewController {
                      paddingLeft: 32,
                      paddingRight: 32)
         
-        
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.anchor(left: view.leftAnchor,
-                                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                     right: view.rightAnchor,
-                                     paddingLeft: 40,
-                                     paddingRight: 16)
+                                        bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                                        right: view.rightAnchor,
+                                        paddingLeft: 40,
+                                        paddingRight: 16)
     }
 }
 
 // MARK: - UIImagePickerControllerDelegate
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any])
+    {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
         self.profileImage = profileImage
         
         plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal),
                                  for: .normal)
-        plusPhotoButton.layer.cornerRadius = 128/2
+        plusPhotoButton.layer.cornerRadius = 128 / 2
         plusPhotoButton.layer.masksToBounds = true
         plusPhotoButton.clipsToBounds = true
         plusPhotoButton.contentMode = .scaleAspectFill
